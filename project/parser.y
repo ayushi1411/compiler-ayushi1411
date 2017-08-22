@@ -7,8 +7,9 @@ int symbolVal(char symbol);
 void updateSymbolVal(char symbol, int val);
 %}
 
-%union {int num; char id;}    /*YACC definitions*/
+%union {int num; char id; char* str}    /*YACC definitions*/
 %start declblock
+/* %token quotes */
 %token print
 %token println
 %token readvar
@@ -17,6 +18,7 @@ void updateSymbolVal(char symbol, int val);
 %token decl_block
 %token <num> number
 %token <id> identifier
+%token <str> text
 /* %type <num> line exp term */
 %type <num> codeblock exp term
 %type <id> assignment
@@ -25,6 +27,7 @@ void updateSymbolVal(char symbol, int val);
 
 /* descriptions of expected inputs 			corresponding actions(in C) */
 codeblock 	: code_block '{' code_statement '}'		{;}
+//declblock : text {printf("hel %s\n",$1);}
 declblock 	: decl_block '{' decl_statement '}'	codeblock	{;}
 decl_statement 	: assignment ';'					{;}
 				| decl_statement assignment ';'		{;}
@@ -33,9 +36,13 @@ decl_statement 	: assignment ';'					{;}
 code_statement	:exit_command ';'			{exit(EXIT_SUCCESS);}
 			| print exp ';'				{printf("Printing %d", $2);}
 			| println exp ';'			{printf("Printing %d\n", $2);}
+			| print text ';'			{printf("Printing %s", $2);}
+			| println text ';'			{printf("Printing %s\n", $2);}
 			| readvar identifier ';'			{scan_var($2);}
 			| code_statement print exp ';'			{printf("Printing %d", $3);}
 			| code_statement println exp ';'			{printf("Printing %d\n", $3);}
+			| code_statement print text ';'			{printf("Printing %s", $3);}
+			| code_statement println text ';'			{printf("Printing %s\n", $3);}
 			| code_statement exit_command ';' 		{exit(EXIT_SUCCESS);}
 			;
 

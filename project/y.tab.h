@@ -52,7 +52,8 @@ extern int yydebug;
     code_block = 262,
     decl_block = 263,
     number = 264,
-    identifier = 265
+    identifier = 265,
+    text = 266
   };
 #endif
 /* Tokens.  */
@@ -64,6 +65,7 @@ extern int yydebug;
 #define decl_block 263
 #define number 264
 #define identifier 265
+#define text 266
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -71,9 +73,9 @@ extern int yydebug;
 union YYSTYPE
 {
 #line 10 "parser.y" /* yacc.c:1909  */
-int num; char id;
+int num; char id; char* str
 
-#line 77 "y.tab.h" /* yacc.c:1909  */
+#line 79 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

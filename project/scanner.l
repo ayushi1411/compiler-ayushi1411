@@ -8,6 +8,7 @@
 "declblock"		{return decl_block;}
 "codeblock"		{return code_block;}
 "exit"			{return exit_command;}
+\".*\"			{yylval.str = yytext; printf("text is %s\n",yytext); return text;}
 [a-zA-Z]		{yylval.id = yytext[0]; return identifier;}
 [0-9]+			{yylval.num = atoi(yytext); return number;}
 [ \t\n]			;
