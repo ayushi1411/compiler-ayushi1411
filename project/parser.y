@@ -10,15 +10,17 @@ void updateSymbolVal(char symbol, int val);
 %union {int num; char id; char* str}    /*YACC definitions*/
 %start declblock
 /* %token quotes */
-%token print
-%token println
-%token readvar
-%token exit_command
-%token code_block
-%token decl_block
-%token <num> number
-%token <id> identifier
-%token <str> text
+%token IF
+%token ELSE
+%token PRINT
+%token PRINTLN
+%token READVAR
+%token EXIT_COMMAND
+%token CODE_BLOCK
+%token DECL_BLOCK
+%token <num> NUMBER
+%token <id> IDENTIFIER
+%token <str> TEXT
 /* %type <num> line exp term */
 %type <num> codeblock exp term
 %type <id> assignment
@@ -26,35 +28,41 @@ void updateSymbolVal(char symbol, int val);
 %%
 
 /* descriptions of expected inputs 			corresponding actions(in C) */
-codeblock 	: code_block '{' code_statement '}'		{;}
-//declblock : text {printf("hel %s\n",$1);}
-declblock 	: decl_block '{' decl_statement '}'	codeblock	{;}
-decl_statement 	: assignment ';'					{;}
-				| decl_statement assignment ';'		{;}
-				| ';'								{;}
-				;
-code_statement	:exit_command ';'			{exit(EXIT_SUCCESS);}
-			| print exp ';'				{printf("Printing %d", $2);}
-			| println exp ';'			{printf("Printing %d\n", $2);}
-			| print text ';'			{printf("Printing %s", $2);}
-			| println text ';'			{printf("Printing %s\n", $2);}
-			| readvar identifier ';'			{scan_var($2);}
-			| code_statement print exp ';'			{printf("Printing %d", $3);}
-			| code_statement println exp ';'			{printf("Printing %d\n", $3);}
-			| code_statement print text ';'			{printf("Printing %s", $3);}
-			| code_statement println text ';'			{printf("Printing %s\n", $3);}
-			| code_statement exit_command ';' 		{exit(EXIT_SUCCESS);}
-			;
-
-assignment	: identifier '=' exp			{updateSymbolVal($1,$3);}
-		;
-exp		: term					{$$ = $1;}
-		| exp '+' term				{$$ = $1 + $3;}
-		| exp '-' term				{$$ = $1 - $3;}
-		;
-term 		: number				{$$=$1;}
-		| identifier				{$$ = symbolVal($1);}
-		;
+codeblock 				: CODE_BLOCK '{' code_statement '}'					{;}
+//declblock 			: TEXT 												{printf("hel %s\n",$1);}
+declblock 				: DECL_BLOCK '{' decl_statement '}'	codeblock		{;}
+decl_statement 			: assignment ';'									{;}
+						| decl_statement assignment ';'						{;}
+						| ';'												{;}
+						;
+code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
+						| PRINT exp ';'										{printf("Printing %d", $2);}
+						| PRINTLN exp ';'									{printf("Printing %d\n", $2);}
+						| PRINT TEXT ';'									{printf("Printing %s", $2);}
+						| PRINTLN TEXT ';'									{printf("Printing %s\n", $2);}
+						| READVAR IDENTIFIER ';'							{scan_var($2);}
+						| if_statement else_statement						{;}
+						| code_statement PRINT exp ';'						{printf("Printing %d", $3);}
+						| code_statement PRINTLN exp ';'					{printf("Printing %d\n", $3);}
+						| code_statement PRINT TEXT ';'						{printf("Printing %s", $3);}
+						| code_statement PRINTLN TEXT ';'					{printf("Printing %s\n", $3);}
+						| code_statement READVAR IDENTIFIER ';'				{scan_var($3);}
+						| code_statement EXIT_COMMAND ';' 					{exit(EXIT_SUCCESS);}
+						| code_statement if_statement else_statement		{;}
+						;
+if_statement			: IF '{' code_statement '}'							{printf("found if loop \n");}
+						;
+else_statement			: ELSE '{' code_statement '}'						{printf("found else loop \n");}
+						;
+assignment				: IDENTIFIER '=' exp								{updateSymbolVal($1,$3);}
+						;
+exp						: term												{$$ = $1;}
+						| exp '+' term										{$$ = $1 + $3;}
+						| exp '-' term										{$$ = $1 - $3;}
+						;
+term 					: NUMBER											{$$=$1;}
+						| IDENTIFIER										{$$ = symbolVal($1);}
+						;
 
 %% /* C code */
 int computeSymbolIndex(char token)
