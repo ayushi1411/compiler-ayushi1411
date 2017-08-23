@@ -12,6 +12,7 @@ void updateSymbolVal(char symbol, int val);
 /* %token quotes */
 %token IF
 %token ELSE
+%token FOR
 %token PRINT
 %token PRINTLN
 %token READVAR
@@ -42,6 +43,7 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 						| PRINTLN TEXT ';'									{printf("Printing %s\n", $2);}
 						| READVAR IDENTIFIER ';'							{scan_var($2);}
 						| if_statement else_statement						{;}
+						| for_statement										{printf("entered for loop\n");}
 						| code_statement PRINT exp ';'						{printf("Printing %d", $3);}
 						| code_statement PRINTLN exp ';'					{printf("Printing %d\n", $3);}
 						| code_statement PRINT TEXT ';'						{printf("Printing %s", $3);}
@@ -53,6 +55,8 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 if_statement			: IF '{' code_statement '}'							{printf("found if loop \n");}
 						;
 else_statement			: ELSE '{' code_statement '}'						{printf("found else loop \n");}
+						;
+for_statement			: FOR '{' code_statement '}'						{printf("found for loop\n"); }
 						;
 assignment				: IDENTIFIER '=' exp								{updateSymbolVal($1,$3);}
 						;

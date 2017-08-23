@@ -47,29 +47,31 @@ extern int yydebug;
   {
     IF = 258,
     ELSE = 259,
-    PRINT = 260,
-    PRINTLN = 261,
-    READVAR = 262,
-    EXIT_COMMAND = 263,
-    CODE_BLOCK = 264,
-    DECL_BLOCK = 265,
-    NUMBER = 266,
-    IDENTIFIER = 267,
-    TEXT = 268
+    FOR = 260,
+    PRINT = 261,
+    PRINTLN = 262,
+    READVAR = 263,
+    EXIT_COMMAND = 264,
+    CODE_BLOCK = 265,
+    DECL_BLOCK = 266,
+    NUMBER = 267,
+    IDENTIFIER = 268,
+    TEXT = 269
   };
 #endif
 /* Tokens.  */
 #define IF 258
 #define ELSE 259
-#define PRINT 260
-#define PRINTLN 261
-#define READVAR 262
-#define EXIT_COMMAND 263
-#define CODE_BLOCK 264
-#define DECL_BLOCK 265
-#define NUMBER 266
-#define IDENTIFIER 267
-#define TEXT 268
+#define FOR 260
+#define PRINT 261
+#define PRINTLN 262
+#define READVAR 263
+#define EXIT_COMMAND 264
+#define CODE_BLOCK 265
+#define DECL_BLOCK 266
+#define NUMBER 267
+#define IDENTIFIER 268
+#define TEXT 269
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -79,7 +81,7 @@ union YYSTYPE
 #line 10 "parser.y" /* yacc.c:1909  */
 int num; char id; char* str
 
-#line 83 "y.tab.h" /* yacc.c:1909  */
+#line 85 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
