@@ -2,9 +2,11 @@
 void yyerror(char *s);  //C declarations used in actions
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 int symbols[52];
 int symbolVal(char symbol);
 void updateSymbolVal(char symbol, int val);
+char* print_text(char* str);
 %}
 
 %union {int num; char id; char* str}    /*YACC definitions*/
@@ -23,9 +25,9 @@ void updateSymbolVal(char symbol, int val);
 %token <num> NUMBER
 %token <id> IDENTIFIER
 %token <str> TEXT
-/* %type <num> line exp term */
 %type <num> codeblock exp term
 %type <id> assignment
+// %type <str> final_print_statement
 
 %%
 
@@ -39,8 +41,8 @@ decl_statement 			: assignment ';'									{;}
 						| ';'												{;}
 						;
 code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
-						| PRINT exp ';'										{printf("Printing %d", $2);}
-						| PRINTLN exp ';'									{printf("Printing %d\n", $2);}
+						| assignment ';'									{;}
+						| code_statement assignment ';'						{;}
 						| PRINT print_statement ';'							{;}
 						| PRINTLN print_statement ';'						{printf("\n");}
 						| READVAR IDENTIFIER ';'							{scan_var($2);}
@@ -58,7 +60,7 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 print_statement			: print_statement ',' final_print_statement 		{;}
 						| final_print_statement								{;}
 final_print_statement	: exp 												{printf("%d",$1);}
-						| TEXT												{printf("%s",$1);}
+						| TEXT												{printf("%s",print_text($1));}
 						;
 if_statement			: IF '{' code_statement '}'							{printf("found if loop \n");}
 						;
@@ -107,6 +109,20 @@ void updateSymbolVal(char symbol, int val)
 {
 	int bucket  = computeSymbolIndex(symbol);
 	symbols[bucket] = val;
+}
+char* print_text(char* str)
+{
+	// char tempstr;
+	int i;
+	int size = strlen(str);
+	char* tempstr = (char*)malloc(sizeof(char)*(size-1));
+	// printf("size:: %d",strlen(str));
+	for(i=1;i<strlen(str)-1;i++)
+	{
+		tempstr[i-1]=str[i];
+	}
+	tempstr[i]='\0';
+	return tempstr;
 }
 
 int main(void){

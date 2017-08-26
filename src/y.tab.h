@@ -80,7 +80,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 10 "parser.y" /* yacc.c:1909  */
+#line 12 "parser.y" /* yacc.c:1909  */
 int num; char id; char* str
 
 #line 87 "y.tab.h" /* yacc.c:1909  */

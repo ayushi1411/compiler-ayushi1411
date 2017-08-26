@@ -12,7 +12,7 @@
 "declblock"		{return DECL_BLOCK;}
 "codeblock"		{return CODE_BLOCK;}
 "exit"			{return EXIT_COMMAND;}
-\".*\"			{yylval.str = yytext; return TEXT;}
+\"[^"].*\"		{yylval.str = yytext; return TEXT;}
 [a-zA-Z]		{yylval.id = yytext[0]; return IDENTIFIER;}
 [0-9]+			{yylval.num = atoi(yytext); return NUMBER;}
 [ \t\n]			;
