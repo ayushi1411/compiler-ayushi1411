@@ -1,8 +1,8 @@
 declblock{
-    a=5 ;
-    b = 10;
+    int a=5,b = 10,e[80];
+    int d[100];
 }
 codeblock{
     c = a + b;
-    println "hello  ", c;
+    println "hello  ", a, " " ,b, " " ,c;
 }

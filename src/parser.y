@@ -9,8 +9,9 @@ void updateSymbolVal(char symbol, int val);
 char* print_text(char* str);
 %}
 
-%union {int num; char id; char* str}    /*YACC definitions*/
+%union {int num; char id; char* str; char* size}    /*YACC definitions*/
 %start declblock
+// %start code_statement
 /* %token quotes */
 %token IF
 %token ELSE
@@ -22,10 +23,12 @@ char* print_text(char* str);
 %token EXIT_COMMAND
 %token CODE_BLOCK
 %token DECL_BLOCK
-%token <num> NUMBER
+%token DATATYPE
+%token <num> NUMBER 
+%token <size> ARRAY_SIZE
 %token <id> IDENTIFIER
 %token <str> TEXT
-%type <num> codeblock exp term
+%type <num> codeblock exp term variable identifiers
 %type <id> assignment
 // %type <str> final_print_statement
 
@@ -36,9 +39,13 @@ codeblock 				: CODE_BLOCK '{' code_statement '}'					{;}
 						;
 declblock 				: DECL_BLOCK '{' decl_statement '}'	codeblock		{;}
 						;
-decl_statement 			: assignment ';'									{;}
-						| decl_statement assignment ';'						{;}
+decl_statement 			: DATATYPE decl_params ';'							{;}
+						| decl_statement decl_statement						{;}
 						| ';'												{;}
+						;
+decl_params				: assignment										{;}
+						| identifiers										{;}
+						| decl_params ',' decl_params						{;}
 						;
 code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 						| assignment ';'									{;}
@@ -59,6 +66,7 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 						;
 print_statement			: print_statement ',' final_print_statement 		{;}
 						| final_print_statement								{;}
+						;
 final_print_statement	: exp 												{printf("%d",$1);}
 						| TEXT												{printf("%s",print_text($1));}
 						;
@@ -77,8 +85,13 @@ exp						: term												{$$ = $1;}
 						| exp '-' term										{$$ = $1 - $3;}
 						;
 term 					: NUMBER											{$$=$1;}
-						| IDENTIFIER										{$$ = symbolVal($1);}
+						| identifiers										{;}
 						;
+variable				: variable ',' variable								{;}
+						| identifiers										{;}
+						;
+identifiers				: IDENTIFIER										{printf("%c",$1);$$ = symbolVal($1);}	
+						| IDENTIFIER ARRAY_SIZE								{printf("array :: %c with size :: %s found\n",$1,$2);}
 
 %% /* C code */
 int computeSymbolIndex(char token)

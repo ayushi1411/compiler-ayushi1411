@@ -55,9 +55,11 @@ extern int yydebug;
     EXIT_COMMAND = 265,
     CODE_BLOCK = 266,
     DECL_BLOCK = 267,
-    NUMBER = 268,
-    IDENTIFIER = 269,
-    TEXT = 270
+    DATATYPE = 268,
+    NUMBER = 269,
+    ARRAY_SIZE = 270,
+    IDENTIFIER = 271,
+    TEXT = 272
   };
 #endif
 /* Tokens.  */
@@ -71,9 +73,11 @@ extern int yydebug;
 #define EXIT_COMMAND 265
 #define CODE_BLOCK 266
 #define DECL_BLOCK 267
-#define NUMBER 268
-#define IDENTIFIER 269
-#define TEXT 270
+#define DATATYPE 268
+#define NUMBER 269
+#define ARRAY_SIZE 270
+#define IDENTIFIER 271
+#define TEXT 272
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -81,9 +85,9 @@ extern int yydebug;
 union YYSTYPE
 {
 #line 12 "parser.y" /* yacc.c:1909  */
-int num; char id; char* str
+int num; char id; char* str; char* size
 
-#line 87 "y.tab.h" /* yacc.c:1909  */
+#line 91 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
