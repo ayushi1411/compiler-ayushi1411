@@ -2,7 +2,7 @@ b: lex.yy.c y.tab.c
 	gcc -g lex.yy.c y.tab.c -o b
 
 lex.yy.c: y.tab.c scanner.l
-	lex scanner.l
+	flex scanner.l
 
 y.tab.c: parser.y
 	yacc -d parser.y
