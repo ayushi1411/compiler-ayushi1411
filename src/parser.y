@@ -24,6 +24,22 @@ char* print_text(char* str);
 %token CODE_BLOCK
 %token DECL_BLOCK
 %token DATATYPE
+%token EQUATE
+%token PLUS
+%token MINUS
+%token MULTIPLY
+%token DIVIDE
+%token MODULO
+%token RGTSHFT
+%token LFTSHFT
+%token LT
+%token GT
+%token LE
+%token GE
+%token EQL
+%token NTEQL
+%token AND
+%token OR
 %token <num> NUMBER 
 %token <size> ARRAY_SIZE
 %token <id> IDENTIFIER
@@ -67,7 +83,7 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 print_statement			: print_statement ',' final_print_statement 		{;}
 						| final_print_statement								{;}
 						;
-final_print_statement	: exp 												{printf("%d",$1);}
+final_print_statement	: identifiers 										{;}
 						| TEXT												{printf("%s",print_text($1));}
 						;
 if_statement			: IF '{' code_statement '}'							{printf("found if loop \n");}
@@ -78,11 +94,11 @@ for_statement			: FOR '{' code_statement '}'						{printf("found for loop\n"); }
 						;
 while_statement			: WHILELOOP '{' code_statement '}'					{printf("found while loop");}
 						;
-assignment				: IDENTIFIER '=' exp								{updateSymbolVal($1,$3);}
+assignment				: IDENTIFIER EQUATE exp								{updateSymbolVal($1,$3);}
 						;
-exp						: term												{$$ = $1;}
-						| exp '+' term										{$$ = $1 + $3;}
-						| exp '-' term										{$$ = $1 - $3;}
+exp						: term												//{$$ = $1;}
+						| exp binop term										//{$$ = $1 + $3;}
+						| '(' exp ')' 										//{$$ = $1 - $3;}
 						;
 term 					: NUMBER											{$$=$1;}
 						| identifiers										{;}
@@ -90,8 +106,33 @@ term 					: NUMBER											{$$=$1;}
 variable				: variable ',' variable								{;}
 						| identifiers										{;}
 						;
-identifiers				: IDENTIFIER										{printf("%c",$1);$$ = symbolVal($1);}	
+identifiers				: IDENTIFIER										{printf("%c",$1);}//$$ = symbolVal($1);}	
 						| IDENTIFIER ARRAY_SIZE								{printf("array :: %c with size :: %s found\n",$1,$2);}
+						;
+arithop					: PLUS												
+						| MINUS
+						| MULTIPLY
+						| DIVIDE
+						| MODULO
+						| RGTSHFT
+						| LFTSHFT
+						;
+relop					: LT
+						| GT
+						| LE
+						| GE
+						;
+eqop					: EQL
+						| NTEQL
+						;
+condop					: AND
+						| OR
+						;
+binop					: arithop
+						| relop
+						| eqop
+						| condop
+						;
 
 %% /* C code */
 int computeSymbolIndex(char token)

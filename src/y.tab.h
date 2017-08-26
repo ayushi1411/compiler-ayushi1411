@@ -56,10 +56,26 @@ extern int yydebug;
     CODE_BLOCK = 266,
     DECL_BLOCK = 267,
     DATATYPE = 268,
-    NUMBER = 269,
-    ARRAY_SIZE = 270,
-    IDENTIFIER = 271,
-    TEXT = 272
+    EQUATE = 269,
+    PLUS = 270,
+    MINUS = 271,
+    MULTIPLY = 272,
+    DIVIDE = 273,
+    MODULO = 274,
+    RGTSHFT = 275,
+    LFTSHFT = 276,
+    LT = 277,
+    GT = 278,
+    LE = 279,
+    GE = 280,
+    EQL = 281,
+    NTEQL = 282,
+    AND = 283,
+    OR = 284,
+    NUMBER = 285,
+    ARRAY_SIZE = 286,
+    IDENTIFIER = 287,
+    TEXT = 288
   };
 #endif
 /* Tokens.  */
@@ -74,10 +90,26 @@ extern int yydebug;
 #define CODE_BLOCK 266
 #define DECL_BLOCK 267
 #define DATATYPE 268
-#define NUMBER 269
-#define ARRAY_SIZE 270
-#define IDENTIFIER 271
-#define TEXT 272
+#define EQUATE 269
+#define PLUS 270
+#define MINUS 271
+#define MULTIPLY 272
+#define DIVIDE 273
+#define MODULO 274
+#define RGTSHFT 275
+#define LFTSHFT 276
+#define LT 277
+#define GT 278
+#define LE 279
+#define GE 280
+#define EQL 281
+#define NTEQL 282
+#define AND 283
+#define OR 284
+#define NUMBER 285
+#define ARRAY_SIZE 286
+#define IDENTIFIER 287
+#define TEXT 288
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -87,7 +119,7 @@ union YYSTYPE
 #line 12 "parser.y" /* yacc.c:1909  */
 int num; char id; char* str; char* size
 
-#line 91 "y.tab.h" /* yacc.c:1909  */
+#line 123 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -4,5 +4,9 @@ declblock{
 }
 codeblock{
     c = a + b;
-    println "hello  ", a, " " ,b, " " ,c;
+    f = a * b;
+    g  = a && b;
+    h = a - b;
+    s = a%b;
+    println "hello  ", a, " " ,b, " " ,c,d[100];
 }
