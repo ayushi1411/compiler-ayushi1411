@@ -1,0 +1,6 @@
+declblock{
+    a=5 ;
+}
+codeblock{
+    println "hello  ", a;
+}

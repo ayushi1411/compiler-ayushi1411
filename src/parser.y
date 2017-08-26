@@ -41,21 +41,24 @@ decl_statement 			: assignment ';'									{;}
 code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 						| PRINT exp ';'										{printf("Printing %d", $2);}
 						| PRINTLN exp ';'									{printf("Printing %d\n", $2);}
-						| PRINT TEXT ';'									{printf("Printing %s", $2);}
-						| PRINTLN TEXT ';'									{printf("Printing %s\n", $2);}
+						| PRINT print_statement ';'							{;}
+						| PRINTLN print_statement ';'						{printf("\n");}
 						| READVAR IDENTIFIER ';'							{scan_var($2);}
 						| if_statement else_statement						{;}
 						| for_statement										{printf("entered for loop\n");}
 						| while_statement									{;}
-						| code_statement PRINT exp ';'						{printf("Printing %d", $3);}
-						| code_statement PRINTLN exp ';'					{printf("Printing %d\n", $3);}
-						| code_statement PRINT TEXT ';'						{printf("Printing %s", $3);}
-						| code_statement PRINTLN TEXT ';'					{printf("Printing %s\n", $3);}
+						| code_statement PRINT print_statement ';'			{;}
+						| code_statement PRINTLN print_statement ';'		{printf("\n");}
 						| code_statement READVAR IDENTIFIER ';'				{scan_var($3);}
 						| code_statement EXIT_COMMAND ';' 					{exit(EXIT_SUCCESS);}
 						| code_statement if_statement else_statement		{;}
 						| code_statement for_statement						{;}
 						| code_statement while_statement					{;}
+						;
+print_statement			: print_statement ',' final_print_statement 		{;}
+						| final_print_statement								{;}
+final_print_statement	: exp 												{printf("%d",$1);}
+						| TEXT												{printf("%s",$1);}
 						;
 if_statement			: IF '{' code_statement '}'							{printf("found if loop \n");}
 						;

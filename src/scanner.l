@@ -12,11 +12,11 @@
 "declblock"		{return DECL_BLOCK;}
 "codeblock"		{return CODE_BLOCK;}
 "exit"			{return EXIT_COMMAND;}
-\".*\"			{yylval.str = yytext; printf("text is %s\n",yytext); return TEXT;}
+\".*\"			{yylval.str = yytext; return TEXT;}
 [a-zA-Z]		{yylval.id = yytext[0]; return IDENTIFIER;}
 [0-9]+			{yylval.num = atoi(yytext); return NUMBER;}
 [ \t\n]			;
-[-+=;{}]		{return yytext[0];}
+[-+=;{},]		{return yytext[0];}
 .			    {ECHO; yyerror("unexpected character");}
 
 %%
