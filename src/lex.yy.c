@@ -386,11 +386,11 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[93] =
     {   0,
-        0,    0,   38,   36,   18,   18,   36,   36,   24,   36,
-       35,   22,   20,   21,   23,   17,   27,   19,   28,   14,
+        0,    0,   38,   36,   18,   18,   36,   36,   25,   36,
+       35,   23,   21,   22,   24,   17,   30,   20,   31,   14,
        36,   14,   14,   14,   14,   14,   14,   14,   14,   14,
-       36,   32,    0,   13,   33,   17,   25,   29,   31,   30,
-       26,   14,    0,    0,   16,   14,   14,   14,   14,   14,
+       36,   32,    0,   13,   33,   17,   28,   26,   19,   27,
+       29,   14,    0,    0,   16,   14,   14,   14,   14,   14,
        14,    3,   14,   14,   14,   14,   34,    0,   15,   14,
        14,   14,   14,    5,   14,    1,   14,   14,   14,   14,
        14,    4,   12,    2,   14,    9,   14,   14,   14,    7,
@@ -900,67 +900,67 @@ YY_RULE_SETUP
 case 19:
 YY_RULE_SETUP
 #line 23 "scanner.l"
-{return EQUATE;}
+{return EQL;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 24 "scanner.l"
-{return PLUS;}
+{return EQUATE;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 25 "scanner.l"
-{return MINUS;}
+{return PLUS;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 26 "scanner.l"
-{return MULTIPLY;}
+{return MINUS;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 27 "scanner.l"
-{return DIVIDE;}
+{return MULTIPLY;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 28 "scanner.l"
-{return MODULO;}
+{return DIVIDE;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 29 "scanner.l"
-{return RGTSHFT;}
+{return MODULO;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 30 "scanner.l"
-{return LFTSHFT;}
+{return LE;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 31 "scanner.l"
-{return LT;}
+{return GE;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 32 "scanner.l"
-{return GT;}
+{return RGTSHFT;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 33 "scanner.l"
-{return LE;}
+{return LFTSHFT;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 34 "scanner.l"
-{return GE;}
+{return LT;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 35 "scanner.l"
-{return EQL;}
+{return GT;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP

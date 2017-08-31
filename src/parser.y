@@ -115,6 +115,8 @@ assignment				: identifiers EQUATE exp								//{updateSymbolVal($1,$3);}
 						;
 exp						: term												//{$$ = $1;}
 						| exp binop exp										//{$$ = $1 + $3;}
+						// | exp MINUS exp
+						// | exp MULTIPLY exp
 						| '(' exp ')' 										//{$$ = $1 - $3;}
 						;
 term 					: NUMBER											{$$=$1;}

@@ -20,19 +20,19 @@
 \[[A-Za-z]*\]   {yylval.index = yytext; return ARRAY_INDEX;}
 [0-9]+			{yylval.num = atoi(yytext); return NUMBER;}
 [ \t\n]			;
+"=="              {return EQL;}
 =               {return EQUATE;}
 \+               {return PLUS;}
 -               {return MINUS;}
 \*               {return MULTIPLY;}
 \/               {return DIVIDE;}
 %               {return MODULO;}
+"<="              {return LE;}
+">="              {return GE;}
 "<<"              {return RGTSHFT;}
 ">>"              {return LFTSHFT;}
 "<"               {return LT;}
 ">"               {return GT;}
-"<="              {return LE;}
-">="              {return GE;}
-"=="              {return EQL;}
 "!="              {return NTEQL;}
 "&&"              {return AND;}
 "||"              {return OR;}
