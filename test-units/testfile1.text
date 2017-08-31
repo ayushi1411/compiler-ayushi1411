@@ -1,0 +1,8 @@
+declblock{
+    int a,b,e[80];
+    int d[100];
+}
+codeblock{
+    c = a + b;
+    println "hello  ", a, " " ,b, " " ,c,d[100];
+}
