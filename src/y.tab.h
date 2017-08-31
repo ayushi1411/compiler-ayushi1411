@@ -47,69 +47,71 @@ extern int yydebug;
   {
     IF = 258,
     ELSE = 259,
-    FOR = 260,
-    WHILELOOP = 261,
-    PRINT = 262,
-    PRINTLN = 263,
-    READVAR = 264,
-    EXIT_COMMAND = 265,
-    CODE_BLOCK = 266,
-    DECL_BLOCK = 267,
-    DATATYPE = 268,
-    EQUATE = 269,
-    PLUS = 270,
-    MINUS = 271,
-    MULTIPLY = 272,
-    DIVIDE = 273,
-    MODULO = 274,
-    RGTSHFT = 275,
-    LFTSHFT = 276,
-    LT = 277,
-    GT = 278,
-    LE = 279,
-    GE = 280,
-    EQL = 281,
-    NTEQL = 282,
-    AND = 283,
-    OR = 284,
-    NUMBER = 285,
-    ARRAY_SIZE = 286,
-    IDENTIFIER = 287,
-    TEXT = 288
+    GOTO = 260,
+    FOR = 261,
+    WHILELOOP = 262,
+    PRINT = 263,
+    PRINTLN = 264,
+    READVAR = 265,
+    EXIT_COMMAND = 266,
+    CODE_BLOCK = 267,
+    DECL_BLOCK = 268,
+    DATATYPE = 269,
+    EQUATE = 270,
+    PLUS = 271,
+    MINUS = 272,
+    MULTIPLY = 273,
+    DIVIDE = 274,
+    MODULO = 275,
+    RGTSHFT = 276,
+    LFTSHFT = 277,
+    LT = 278,
+    GT = 279,
+    LE = 280,
+    GE = 281,
+    EQL = 282,
+    NTEQL = 283,
+    AND = 284,
+    OR = 285,
+    NUMBER = 286,
+    ARRAY_SIZE = 287,
+    IDENTIFIER = 288,
+    TEXT = 289
   };
 #endif
 /* Tokens.  */
 #define IF 258
 #define ELSE 259
-#define FOR 260
-#define WHILELOOP 261
-#define PRINT 262
-#define PRINTLN 263
-#define READVAR 264
-#define EXIT_COMMAND 265
-#define CODE_BLOCK 266
-#define DECL_BLOCK 267
-#define DATATYPE 268
-#define EQUATE 269
-#define PLUS 270
-#define MINUS 271
-#define MULTIPLY 272
-#define DIVIDE 273
-#define MODULO 274
-#define RGTSHFT 275
-#define LFTSHFT 276
-#define LT 277
-#define GT 278
-#define LE 279
-#define GE 280
-#define EQL 281
-#define NTEQL 282
-#define AND 283
-#define OR 284
-#define NUMBER 285
-#define ARRAY_SIZE 286
-#define IDENTIFIER 287
-#define TEXT 288
+#define GOTO 260
+#define FOR 261
+#define WHILELOOP 262
+#define PRINT 263
+#define PRINTLN 264
+#define READVAR 265
+#define EXIT_COMMAND 266
+#define CODE_BLOCK 267
+#define DECL_BLOCK 268
+#define DATATYPE 269
+#define EQUATE 270
+#define PLUS 271
+#define MINUS 272
+#define MULTIPLY 273
+#define DIVIDE 274
+#define MODULO 275
+#define RGTSHFT 276
+#define LFTSHFT 277
+#define LT 278
+#define GT 279
+#define LE 280
+#define GE 281
+#define EQL 282
+#define NTEQL 283
+#define AND 284
+#define OR 285
+#define NUMBER 286
+#define ARRAY_SIZE 287
+#define IDENTIFIER 288
+#define TEXT 289
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -117,9 +119,9 @@ extern int yydebug;
 union YYSTYPE
 {
 #line 12 "parser.y" /* yacc.c:1909  */
-int num; char id; char* str; char* size
+int num; char* id; char* str; char* size
 
-#line 123 "y.tab.h" /* yacc.c:1909  */
+#line 125 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

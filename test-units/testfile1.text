@@ -1,5 +1,5 @@
 declblock{
-    int a=5,b = 10,e[80];
+    int a,b,e[80];
     int d[100];
 }
 codeblock{

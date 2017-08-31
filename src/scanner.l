@@ -3,6 +3,7 @@
 %}
 %%
 "int"           {return DATATYPE;}
+"goto"          {return GOTO;}
 "if"			{return IF;}
 "else"			{return ELSE;}
 "for"           {return FOR;}
@@ -14,7 +15,7 @@
 "codeblock"		{return CODE_BLOCK;}
 "exit"			{return EXIT_COMMAND;}
 \"[^\"]*\"      {yylval.str = yytext; return TEXT;}
-[a-zA-Z]		{yylval.id = yytext[0]; return IDENTIFIER;}
+[a-zA-Z]*		{yylval.id = yytext; return IDENTIFIER;}
 \[[1-9][0-9]*\] {yylval.size = yytext; return ARRAY_SIZE;}
 [0-9]+			{yylval.num = atoi(yytext); return NUMBER;}
 [ \t\n]			;
