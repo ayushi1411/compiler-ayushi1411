@@ -73,10 +73,11 @@ extern int yydebug;
     NTEQL = 283,
     AND = 284,
     OR = 285,
-    NUMBER = 286,
-    ARRAY_SIZE = 287,
-    IDENTIFIER = 288,
-    TEXT = 289
+    ARRAY_INDEX = 286,
+    NUMBER = 287,
+    ARRAY_SIZE = 288,
+    IDENTIFIER = 289,
+    TEXT = 290
   };
 #endif
 /* Tokens.  */
@@ -108,10 +109,11 @@ extern int yydebug;
 #define NTEQL 283
 #define AND 284
 #define OR 285
-#define NUMBER 286
-#define ARRAY_SIZE 287
-#define IDENTIFIER 288
-#define TEXT 289
+#define ARRAY_INDEX 286
+#define NUMBER 287
+#define ARRAY_SIZE 288
+#define IDENTIFIER 289
+#define TEXT 290
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -119,9 +121,9 @@ extern int yydebug;
 union YYSTYPE
 {
 #line 12 "parser.y" /* yacc.c:1909  */
-int num; char* id; char* str; char* size
+int num; char* id; char* str; char* size; char* index
 
-#line 125 "y.tab.h" /* yacc.c:1909  */
+#line 127 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

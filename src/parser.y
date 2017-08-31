@@ -9,8 +9,9 @@ void updateSymbolVal(char symbol, int val);
 char* print_text(char* str);
 %}
 
-%union {int num; char* id; char* str; char* size}    /*YACC definitions*/
+%union {int num; char* id; char* str; char* size; char* index}    /*YACC definitions*/
 %start declblock
+// %start for_exp
 // %start code_statement
 /* %token quotes */
 %token IF
@@ -41,6 +42,12 @@ char* print_text(char* str);
 %token NTEQL
 %token AND
 %token OR
+%left EQL NTEQL
+%left AND OR
+%left LT GT LE GE
+%left PLUS MINUS
+%left MULTIPLY DIVIDE
+%token <index> ARRAY_INDEX 
 %token <num> NUMBER 
 %token <size> ARRAY_SIZE
 %token <id> IDENTIFIER
@@ -74,6 +81,7 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 						| for_statement										{printf("entered for loop\n");}
 						| while_statement									{;}
 						| goto_statement									{;}
+						| IDENTIFIER ':'									{;}
 						| code_statement PRINT print_statement ';'			{;}
 						| code_statement PRINTLN print_statement ';'		{printf("\n");}
 						| code_statement READVAR IDENTIFIER ';'				{printf("reading the identifier\n");}//{scan_var($3);}
@@ -83,6 +91,7 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 						| code_statement for_statement						{;}
 						| code_statement while_statement					{;}
 						| code_statement goto_statement						{;}
+						| code_statement IDENTIFIER ':'						{;}
 						;
 print_statement			: print_statement ',' final_print_statement 		{;}
 						| final_print_statement								{;}
@@ -97,15 +106,15 @@ else_statement			: ELSE '{' code_statement '}'						{printf("found else loop \n"
 						;
 for_statement			: FOR for_exp '{' code_statement '}'				{printf("found for loop\n"); }
 						;
-for_exp					: NUMBER ',' NUMBER									
-						| NUMBER ',' NUMBER ',' NUMBER
+for_exp					: IDENTIFIER EQUATE NUMBER ',' NUMBER									
+						| IDENTIFIER EQUATE NUMBER ',' NUMBER ',' NUMBER
 						;
 while_statement			: WHILELOOP exp '{' code_statement '}'				{printf("found while loop");}
 						;
-assignment				: IDENTIFIER EQUATE exp								//{updateSymbolVal($1,$3);}
+assignment				: identifiers EQUATE exp								//{updateSymbolVal($1,$3);}
 						;
 exp						: term												//{$$ = $1;}
-						| exp binop term										//{$$ = $1 + $3;}
+						| exp binop exp										//{$$ = $1 + $3;}
 						| '(' exp ')' 										//{$$ = $1 - $3;}
 						;
 term 					: NUMBER											{$$=$1;}
@@ -116,6 +125,7 @@ variable				: variable ',' variable								{;}
 						;
 identifiers				: IDENTIFIER										{printf("identifier is :: %s\n",$1);}//$$ = symbolVal($1);}	
 						| IDENTIFIER ARRAY_SIZE								{printf("array :: %s with size :: %s found\n",$1,$2);}
+						| IDENTIFIER ARRAY_INDEX							{;}
 						;
 arithop					: PLUS												{printf("found +\n");}
 						| MINUS												{printf("found -\n");}
@@ -141,8 +151,9 @@ binop					: arithop
 						| eqop
 						| condop
 						;
-goto_statement			: GOTO IDENTIFIER									{printf("found goto statement\n");}
-						| GOTO IDENTIFIER IF exp							{printf("found goto statement with if condition\n");}
+goto_statement			: GOTO IDENTIFIER IF exp ';'							{printf("found goto statement with if condition\n");}
+						| GOTO IDENTIFIER ';'								{printf("found goto statement\n");}
+						;
 
 %% /* C code */
 int computeSymbolIndex(char token)

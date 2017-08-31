@@ -15,8 +15,9 @@
 "codeblock"		{return CODE_BLOCK;}
 "exit"			{return EXIT_COMMAND;}
 \"[^\"]*\"      {yylval.str = yytext; return TEXT;}
-[a-zA-Z]*		{yylval.id = yytext; return IDENTIFIER;}
+[a-zA-Z][a-zA-Z0-9]* {yylval.id = yytext; return IDENTIFIER;}
 \[[1-9][0-9]*\] {yylval.size = yytext; return ARRAY_SIZE;}
+\[[A-Za-z]*\]   {yylval.index = yytext; return ARRAY_INDEX;}
 [0-9]+			{yylval.num = atoi(yytext); return NUMBER;}
 [ \t\n]			;
 =               {return EQUATE;}
@@ -35,7 +36,7 @@
 "!="              {return NTEQL;}
 "&&"              {return AND;}
 "||"              {return OR;}
-[;{},()]		{return yytext[0];}
+[;{},():]		{return yytext[0];}
 .			    {printf("the char is %c",yytext[0]);ECHO;  yyerror("unexpected character");}
 
 %%
