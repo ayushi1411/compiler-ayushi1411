@@ -527,7 +527,7 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "scanner.l"
 #line 2 "scanner.l"
-#include "y.tab.h"
+#include "parser.tab.h"
 #line 532 "lex.yy.c"
 
 #define INITIAL 0
@@ -985,7 +985,7 @@ YY_RULE_SETUP
 case 36:
 YY_RULE_SETUP
 #line 40 "scanner.l"
-{printf("the char is %c",yytext[0]);ECHO;  yyerror("unexpected character");}
+{printf("the char is %c",yytext[0]);ECHO; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP

@@ -34,7 +34,7 @@
 # define YY_YY_PARSER_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -86,8 +86,8 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 12 "parser.y" /* yacc.c:1909  */
-int num; char* id; char* str; char* size; char* index
+#line 15 "parser.y" /* yacc.c:1909  */
+int num; char* id; char* str; char* size; char* index;
 
 #line 93 "parser.tab.h" /* yacc.c:1909  */
 };
