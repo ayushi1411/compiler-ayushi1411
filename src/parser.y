@@ -1,15 +1,18 @@
 %{
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+#include<bits/stdc++.h>
+using namespace std;
 void yyerror(char *s);  //C declarations used in actions
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+int yylex(void);
 int symbols[52];
 int symbolVal(char symbol);
 void updateSymbolVal(char symbol, int val);
 char* print_text(char* str);
 %}
 
-%union {int num; char* id; char* str; char* size; char* index}    /*YACC definitions*/
+%union {int num; char* id; char* str; char* size; char* index;}    /*YACC definitions*/
 %start declblock
 // %start for_exp
 // %start code_statement
@@ -201,6 +204,7 @@ char* print_text(char* str)
 	tempstr[i]='\0';
 	return tempstr;
 }
+void yyerror (char *s) { fprintf(stderr, "%s\n",s);}
 
 int main(void){
 	/* init symbol table*/
@@ -210,5 +214,4 @@ int main(void){
 	}
 	return yyparse();
 }
-void yyerror (char *s) { fprintf(stderr, "%s\n",s);}
 

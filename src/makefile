@@ -1,11 +1,11 @@
-b: lex.yy.c y.tab.c
-	gcc -g lex.yy.c y.tab.c -o b
+b: lex.yy.c parser.tab.c
+	g++ -g lex.yy.c parser.tab.c -o b
 
-lex.yy.c: y.tab.c scanner.l
+lex.yy.c: parser.tab.c scanner.l
 	flex scanner.l
 
-y.tab.c: parser.y
-	yacc -d parser.y
+parser.tab.c: parser.y
+	bison -d --debug --verbose parser.y
 
 clean: 
-	rm -f lex.yy.c y.tab.c y.tab.h b
+	rm -f lex.yy.c parser.tab.c parser.tab.h b
