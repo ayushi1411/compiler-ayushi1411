@@ -1,5 +1,5 @@
 %{
-#include "y.tab.h"
+#include "parser.tab.h"
 %}
 %%
 "int"           {return DATATYPE;}
@@ -37,7 +37,7 @@
 "&&"              {return AND;}
 "||"              {return OR;}
 [;{},():]		{return yytext[0];}
-.			    {printf("the char is %c",yytext[0]);ECHO;  yyerror("unexpected character");}
+.			    {printf("the char is %c",yytext[0]);ECHO; }
 
 %%
 int yywrap (void) {return 1;}
