@@ -3,6 +3,7 @@
 // #include <stdlib.h>
 // #include <string.h>
 #include<bits/stdc++.h>
+#include "ASTDefinitions.h"
 using namespace std;
 void yyerror(char *s);  //C declarations used in actions
 int yylex(void);
@@ -12,12 +13,32 @@ void updateSymbolVal(char symbol, int val);
 char* print_text(char* str);
 %}
 
-%union {int num; char* id; char* str; char* size; char* index;}    /*YACC definitions*/
+%union 
+{
+	int num; char* id; char* str; char* size; char* index;
+	class ASTIdNode* ASTIdNode ; 
+	class ASTVariable* ASTVariable ;
+	class ASTTerm* ASTTerm;
+	class ASTExp* ASTExp;
+	class ASTAssignment* ASTAssignment;
+	class ASTPrintStmt* ASTPrintStmt;
+	class ASTFinalPrintStmt* ASTFinalPrintStmt;
+	class ASTCodeStmt* ASTCodeStmt;
+
+}    /*YACC definitions*/
 %start declblock
 // %start for_exp
 // %start code_statement
 /* %token quotes */
-%token IF
+
+%type <ASTIdNode> identifiers
+%type <ASTVariable> variable 
+%type <ASTTerm> term
+%type <ASTExp> exp
+%type <ASTAssignment> assignment
+%type <ASTPrintStmt> print_statement
+%type <ASTFinalPrintStmt> final_print_statement
+%type <ASTCodeStmt> code_statement
 %token ELSE
 %token GOTO
 %token FOR
@@ -31,6 +52,7 @@ char* print_text(char* str);
 %token DATATYPE
 %token EQUATE
 %token PLUS
+%token IF
 %token MINUS
 %token MULTIPLY
 %token DIVIDE
@@ -55,16 +77,17 @@ char* print_text(char* str);
 %token <size> ARRAY_SIZE
 %token <id> IDENTIFIER
 %token <str> TEXT
-%type <num> codeblock exp term variable identifiers
-%type <id> assignment
+%type <num> codeblock 
+// %type <id> assignment
+%type <id> binop arithop condop relop eqop
 // %type <str> final_print_statement
 
 %%
 
 /* descriptions of expected inputs 			corresponding actions(in C) */
-codeblock 				: CODE_BLOCK '{' code_statement '}'					{;}
-						;
 declblock 				: DECL_BLOCK '{' decl_statement '}'	codeblock		{;}
+						;
+codeblock 				: CODE_BLOCK '{' code_statement '}'					{;}
 						;
 decl_statement 			: DATATYPE decl_params ';'							{;}
 						| decl_statement decl_statement						{;}
@@ -96,68 +119,69 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 						| code_statement goto_statement						{;}
 						| code_statement IDENTIFIER ':'						{;}
 						;
-print_statement			: print_statement ',' final_print_statement 		{;}
-						| final_print_statement								{;}
+print_statement			: print_statement ',' final_print_statement 		{ASTMultiPrintStmt* mulprint = new ASTMultiPrintStmt($1, $3); $$ = new ASTPrintStmt(); $$->MulPrintStmt = mulprint;}
+						| final_print_statement								{ASTFinPrintStmt* finprint = new ASTFinPrintStmt($1); $$ = new ASTPrintStmt(); $$->FinPrintStmt = finprint; }
 						;
-final_print_statement	: identifiers 										{;}
-						| TEXT												{printf("%s",print_text($1));}
+final_print_statement	: identifiers 										{ASTFinalPrintStmtId* finalidprint = new ASTFinalPrintStmtId($1); $$ = new ASTFinalPrintStmt(); $$->FinalPrintStmtId = finalidprint;}
+						| TEXT												{ASTFinalPrintStmtText* textprint = new ASTFinalPrintStmtText($1); $$  = new ASTFinalPrintStmt(); $$->FinalPrintStmtText = textprint;}
 						;
-if_statement			: IF exp '{' code_statement '}'						{printf("found if loop \n");}
+if_statement			: IF exp '{' code_statement '}'						
 						;
-else_statement			: ELSE '{' code_statement '}'						{printf("found else loop \n");}
-						| ELSE if_statement									{printf("found if-elseif statements\n");}
+else_statement			: ELSE '{' code_statement '}'						
+						| ELSE if_statement									
 						;
-for_statement			: FOR for_exp '{' code_statement '}'				{printf("found for loop\n"); }
+for_statement			: FOR for_exp '{' code_statement '}'				
 						;
 for_exp					: IDENTIFIER EQUATE NUMBER ',' NUMBER									
 						| IDENTIFIER EQUATE NUMBER ',' NUMBER ',' NUMBER
 						;
-while_statement			: WHILELOOP exp '{' code_statement '}'				{printf("found while loop");}
+while_statement			: WHILELOOP exp '{' code_statement '}'				
 						;
-assignment				: identifiers EQUATE exp								//{updateSymbolVal($1,$3);}
+assignment				: identifiers EQUATE exp							{$$ = new ASTAssignment($1, $3); }
 						;
-exp						: term												//{$$ = $1;}
-						| exp binop exp										//{$$ = $1 + $3;}
-						// | exp MINUS exp
-						// | exp MULTIPLY exp
-						| '(' exp ')' 										//{$$ = $1 - $3;}
+exp						: term												{ASTExpTerm* expterm = new ASTExpTerm($1); $$ = new ASTExp(); $$->ExpTerm = expterm;}
+						| exp binop exp										{ASTExpOps* expops = new ASTExpOps($1, $2, $3); $$ = new ASTExp(); $$->ExpOps = expops;}
+						| '(' exp ')' 										{ASTExpParan* expparan = new ASTExpParan($2); $$  = new ASTExp(); $$->ExpParan = expparan; }
 						;
-term 					: NUMBER											{$$=$1;}
-						| identifiers										{;}
+term 					: NUMBER											{ASTTermNum* numterm = new ASTTermNum($1); $$=new ASTTerm(); $$->NumTerm = numterm; cout<<"term created"<<$$->NumTerm->num<<endl;}
+						| identifiers										{ASTTermId* idterm = new ASTTermId($1); $$=new ASTTerm(); $$->IdTerm = idterm; cout<<"term id created"<<$$->IdTerm->id<<" "<<idterm->id<<endl;}
 						;
-variable				: variable ',' variable								{;}
-						| identifiers										{;}
+variable				: variable ',' variable								{ ASTMultiVariable *mulvar = new ASTMultiVariable($1,$3); $$=new ASTVariable() ; $$->MulVar=mulvar; cout<<$$<<endl;}
+						| identifiers										{ ASTIdVariable *idvar = new ASTIdVariable($1);$$=new ASTVariable() ; $$->IdVar=idvar; cout<<$$<<endl;}
 						;
-identifiers				: IDENTIFIER										{printf("identifier is :: %s\n",$1);}//$$ = symbolVal($1);}	
-						| IDENTIFIER ARRAY_SIZE								{printf("array :: %s with size :: %s found\n",$1,$2);}
-						| IDENTIFIER ARRAY_INDEX							{;}
+						
+identifiers				: IDENTIFIER										{$$=new ASTIdNode($1); cout<<$$->id<<"instace created"<<endl; }	
+						| IDENTIFIER ARRAY_SIZE								{$$=new ASTIdNode($1,$2, "NULL");cout<<$$->id_index<<"array num accessed"<<endl;}
+						| IDENTIFIER ARRAY_INDEX							{$$=new ASTIdNode($1,"-1",$2);cout<<$$->id_index<<"array accessed"<<endl;}
 						;
-arithop					: PLUS												{printf("found +\n");}
-						| MINUS												{printf("found -\n");}
-						| MULTIPLY											{printf("found *\n");}
-						| DIVIDE											{printf("found /\n");}
-						| MODULO											{printf("found %\n");}
-						| RGTSHFT											{printf("found >>\n");}
-						| LFTSHFT											{printf("found <<\n");}
+arithop					: PLUS												{$$="+";}
+						| MINUS												{$$="-";}
+						| MULTIPLY											{$$="*";}
+						| DIVIDE											{$$="/";}
+						| MODULO											{$$="%";}
+						| RGTSHFT											{$$=">>";}
+						| LFTSHFT											{$$="<<";}
 						;
-relop					: LT												{printf("found <\n");}
-						| GT												{printf("found >\n");}
-						| LE												{printf("found <=\n");}
-						| GE												{printf("found >=\n");}
+
+
+relop					: LT												{$$="<";}
+						| GT												{$$=">";}
+						| LE												{$$="<=";}
+						| GE												{$$=">=";}
 						;
-eqop					: EQL												{printf("found ==\n");}
-						| NTEQL												{printf("found !=\n");}
+eqop					: EQL												{$$="==";}
+						| NTEQL												{$$="!=";}
 						;
-condop					: AND												{printf("found &&\n");}
-						| OR												{printf("found ||\n");}
+condop					: AND												{$$="&&";}
+						| OR												{$$="||";}
 						;
-binop					: arithop
-						| relop
-						| eqop
-						| condop
+binop					: arithop											{$$=$1;}
+						| relop												{$$=$1;}
+						| eqop												{$$=$1;}
+						| condop											{$$=$1;}
 						;
-goto_statement			: GOTO IDENTIFIER IF exp ';'							{printf("found goto statement with if condition\n");}
-						| GOTO IDENTIFIER ';'								{printf("found goto statement\n");}
+goto_statement			: GOTO IDENTIFIER IF exp ';'							
+						| GOTO IDENTIFIER ';'								
 						;
 
 %% /* C code */

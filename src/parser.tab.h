@@ -45,20 +45,20 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    IF = 258,
-    ELSE = 259,
-    GOTO = 260,
-    FOR = 261,
-    WHILELOOP = 262,
-    PRINT = 263,
-    PRINTLN = 264,
-    READVAR = 265,
-    EXIT_COMMAND = 266,
-    CODE_BLOCK = 267,
-    DECL_BLOCK = 268,
-    DATATYPE = 269,
-    EQUATE = 270,
-    PLUS = 271,
+    ELSE = 258,
+    GOTO = 259,
+    FOR = 260,
+    WHILELOOP = 261,
+    PRINT = 262,
+    PRINTLN = 263,
+    READVAR = 264,
+    EXIT_COMMAND = 265,
+    CODE_BLOCK = 266,
+    DECL_BLOCK = 267,
+    DATATYPE = 268,
+    EQUATE = 269,
+    PLUS = 270,
+    IF = 271,
     MINUS = 272,
     MULTIPLY = 273,
     DIVIDE = 274,
@@ -86,10 +86,19 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 15 "parser.y" /* yacc.c:1909  */
-int num; char* id; char* str; char* size; char* index;
+#line 17 "parser.y" /* yacc.c:1909  */
 
-#line 93 "parser.tab.h" /* yacc.c:1909  */
+	int num; char* id; char* str; char* size; char* index;
+	class ASTIdNode* ASTIdNode ; 
+	class ASTVariable* ASTVariable ;
+	class ASTTerm* ASTTerm;
+	class ASTExp* ASTExp;
+	class ASTAssignment* ASTAssignment;
+	class ASTPrintStmt* ASTPrintStmt;
+	class ASTFinalPrintStmt* ASTFinalPrintStmt;
+
+
+#line 102 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
