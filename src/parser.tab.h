@@ -96,9 +96,19 @@ union YYSTYPE
 	class ASTAssignment* ASTAssignment;
 	class ASTPrintStmt* ASTPrintStmt;
 	class ASTFinalPrintStmt* ASTFinalPrintStmt;
+	class ASTCodeStmt* ASTCodeStmt;
+	class ASTIfStmt* ASTIfStmt;
+	class ASTElseStmt* ASTElseStmt;
+	class ASTForStmt* ASTForStmt;
+	class ASTWhileStmt* ASTWhileStmt;
+	class ASTGotoStmt* ASTGotoStmt;
+	class ASTForExp* ASTForExp;
+	class ASTCodeBlockNode* ASTCodeBlockNode;
+	class ASTDeclStmt* ASTDeclStmt;
+	class ASTDeclParams* ASTDeclParams;
+	class ASTDeclBlockNode* ASTDeclBlockNode;
 
-
-#line 102 "parser.tab.h" /* yacc.c:1909  */
+#line 112 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

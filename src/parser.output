@@ -43,7 +43,7 @@ Grammar
    19               | IDENTIFIER ':'
    20               | code_statement PRINT print_statement ';'
    21               | code_statement PRINTLN print_statement ';'
-   22               | code_statement READVAR IDENTIFIER ';'
+   22               | code_statement READVAR identifiers ';'
    23               | code_statement EXIT_COMMAND ';'
    24               | code_statement if_statement else_statement
    25               | code_statement if_statement
@@ -153,7 +153,7 @@ OR (285) 64
 ARRAY_INDEX (286) 49
 NUMBER (287) 38 39 45
 ARRAY_SIZE (288) 48
-IDENTIFIER (289) 19 22 29 38 39 47 48 49 69 70
+IDENTIFIER (289) 19 29 38 39 47 48 49 69 70
 TEXT (290) 33
 
 
@@ -194,7 +194,7 @@ exp (57)
 term (58)
     on left: 45 46, on right: 42
 identifiers (59)
-    on left: 47 48 49, on right: 6 13 32 41 46
+    on left: 47 48 49, on right: 6 13 22 32 41 46
 arithop (60)
     on left: 50 51 52 53 54 55 56, on right: 65
 relop (61)
@@ -512,7 +512,7 @@ State 30
    10 code_statement: code_statement . assignment ';'
    20               | code_statement . PRINT print_statement ';'
    21               | code_statement . PRINTLN print_statement ';'
-   22               | code_statement . READVAR IDENTIFIER ';'
+   22               | code_statement . READVAR identifiers ';'
    23               | code_statement . EXIT_COMMAND ';'
    24               | code_statement . if_statement else_statement
    25               | code_statement . if_statement
@@ -789,9 +789,11 @@ State 55
 
 State 56
 
-   22 code_statement: code_statement READVAR . IDENTIFIER ';'
+   22 code_statement: code_statement READVAR . identifiers ';'
 
-    IDENTIFIER  shift, and go to state 102
+    IDENTIFIER  shift, and go to state 8
+
+    identifiers  go to state 102
 
 
 State 57
@@ -1224,7 +1226,7 @@ State 101
 
 State 102
 
-   22 code_statement: code_statement READVAR IDENTIFIER . ';'
+   22 code_statement: code_statement READVAR identifiers . ';'
 
     ';'  shift, and go to state 120
 
@@ -1359,7 +1361,7 @@ State 112
    10 code_statement: code_statement . assignment ';'
    20               | code_statement . PRINT print_statement ';'
    21               | code_statement . PRINTLN print_statement ';'
-   22               | code_statement . READVAR IDENTIFIER ';'
+   22               | code_statement . READVAR identifiers ';'
    23               | code_statement . EXIT_COMMAND ';'
    24               | code_statement . if_statement else_statement
    25               | code_statement . if_statement
@@ -1400,7 +1402,7 @@ State 114
    10 code_statement: code_statement . assignment ';'
    20               | code_statement . PRINT print_statement ';'
    21               | code_statement . PRINTLN print_statement ';'
-   22               | code_statement . READVAR IDENTIFIER ';'
+   22               | code_statement . READVAR identifiers ';'
    23               | code_statement . EXIT_COMMAND ';'
    24               | code_statement . if_statement else_statement
    25               | code_statement . if_statement
@@ -1486,7 +1488,7 @@ State 117
    10 code_statement: code_statement . assignment ';'
    20               | code_statement . PRINT print_statement ';'
    21               | code_statement . PRINTLN print_statement ';'
-   22               | code_statement . READVAR IDENTIFIER ';'
+   22               | code_statement . READVAR identifiers ';'
    23               | code_statement . EXIT_COMMAND ';'
    24               | code_statement . if_statement else_statement
    25               | code_statement . if_statement
@@ -1531,7 +1533,7 @@ State 119
 
 State 120
 
-   22 code_statement: code_statement READVAR IDENTIFIER ';' .
+   22 code_statement: code_statement READVAR identifiers ';' .
 
     $default  reduce using rule 22 (code_statement)
 
@@ -1541,7 +1543,7 @@ State 121
    10 code_statement: code_statement . assignment ';'
    20               | code_statement . PRINT print_statement ';'
    21               | code_statement . PRINTLN print_statement ';'
-   22               | code_statement . READVAR IDENTIFIER ';'
+   22               | code_statement . READVAR identifiers ';'
    23               | code_statement . EXIT_COMMAND ';'
    24               | code_statement . if_statement else_statement
    25               | code_statement . if_statement

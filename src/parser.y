@@ -24,7 +24,16 @@ char* print_text(char* str);
 	class ASTPrintStmt* ASTPrintStmt;
 	class ASTFinalPrintStmt* ASTFinalPrintStmt;
 	class ASTCodeStmt* ASTCodeStmt;
-
+	class ASTIfStmt* ASTIfStmt;
+	class ASTElseStmt* ASTElseStmt;
+	class ASTForStmt* ASTForStmt;
+	class ASTWhileStmt* ASTWhileStmt;
+	class ASTGotoStmt* ASTGotoStmt;
+	class ASTForExp* ASTForExp;
+	class ASTCodeBlockNode* ASTCodeBlockNode;
+	class ASTDeclStmt* ASTDeclStmt;
+	class ASTDeclParams* ASTDeclParams;
+	class ASTDeclBlockNode* ASTDeclBlockNode;
 }    /*YACC definitions*/
 %start declblock
 // %start for_exp
@@ -39,6 +48,16 @@ char* print_text(char* str);
 %type <ASTPrintStmt> print_statement
 %type <ASTFinalPrintStmt> final_print_statement
 %type <ASTCodeStmt> code_statement
+%type <ASTIfStmt> if_statement
+%type <ASTElseStmt> else_statement
+%type <ASTForStmt> for_statement
+%type <ASTWhileStmt> while_statement
+%type <ASTGotoStmt> goto_statement
+%type<ASTForExp> for_exp
+%type <ASTCodeBlockNode> codeblock
+%type <ASTDeclStmt> decl_statement
+%type <ASTDeclParams> decl_params
+%type <ASTDeclBlockNode> declblock
 %token ELSE
 %token GOTO
 %token FOR
@@ -77,47 +96,44 @@ char* print_text(char* str);
 %token <size> ARRAY_SIZE
 %token <id> IDENTIFIER
 %token <str> TEXT
-%type <num> codeblock 
-// %type <id> assignment
 %type <id> binop arithop condop relop eqop
-// %type <str> final_print_statement
 
 %%
 
 /* descriptions of expected inputs 			corresponding actions(in C) */
-declblock 				: DECL_BLOCK '{' decl_statement '}'	codeblock		{;}
+declblock 				: DECL_BLOCK '{' decl_statement '}'	codeblock		{$$ = new ASTDeclBlockNode($3, $5);}
 						;
-codeblock 				: CODE_BLOCK '{' code_statement '}'					{;}
+codeblock 				: CODE_BLOCK '{' code_statement '}'					{$$ = new ASTCodeBlockNode($3);}
 						;
-decl_statement 			: DATATYPE decl_params ';'							{;}
-						| decl_statement decl_statement						{;}
+decl_statement 			: DATATYPE decl_params ';'							{ASTParamsDeclStmt* declstmt = new ASTParamsDeclStmt($2); $$ = new ASTDeclStmt(); $$->ParamsDeclStmt = declstmt;}
+						| decl_statement decl_statement						{ASTMultiDeclStmt* declstmt = new ASTMultiDeclStmt($1, $2); $$ = new ASTDeclStmt(); $$->MultiDeclStmt = declstmt;}
 						| ';'												{;}
 						;
-decl_params				: identifiers										{;}
-						| decl_params ',' decl_params						{;}
+decl_params				: identifiers										{ASTDeclIdParams* declparam = new ASTDeclIdParams($1); $$ = new ASTDeclParams(); $$->DeclIdParams = declparam;}
+						| decl_params ',' decl_params						{ASTDeclMultiParams* declparam = new ASTDeclMultiParams($1, $3); $$ = new ASTDeclParams(); $$->DeclMultiParams = declparam;}
 						;
 code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
-						| assignment ';'									{;}
-						| code_statement assignment ';'						{;}
-						| PRINT print_statement ';'							{;}
-						| PRINTLN print_statement ';'						{printf("\n");}
-						| READVAR identifiers ';'							{printf("reading the identifier\n");}//{scan_var($2);}
-						| if_statement else_statement						{;}
-						| if_statement										{;}
-						| for_statement										{printf("entered for loop\n");}
-						| while_statement									{;}
-						| goto_statement									{;}
-						| IDENTIFIER ':'									{;}
-						| code_statement PRINT print_statement ';'			{;}
-						| code_statement PRINTLN print_statement ';'		{printf("\n");}
-						| code_statement READVAR IDENTIFIER ';'				{printf("reading the identifier\n");}//{scan_var($3);}
+						| assignment ';'									{ASTCodeAssignment* codeassign = new ASTCodeAssignment($1); $$ = new ASTCodeStmt(); $$->CodeAssignment = codeassign; }
+						| code_statement assignment ';'						{ASTMultiCodeAssignment* codeassign = new ASTMultiCodeAssignment($1, $2); $$ = new ASTCodeStmt(); $$->MultiCodeAssignment = codeassign;}
+						| PRINT print_statement ';'							{ASTCodePrint* codeprint = new ASTCodePrint($2, false); $$ = new ASTCodeStmt(); $$->CodePrint = codeprint;}
+						| PRINTLN print_statement ';'						{ASTCodePrint* codeprint = new ASTCodePrint($2, true); $$ = new ASTCodeStmt(); $$->CodePrint = codeprint;}
+						| READVAR identifiers ';'							{ASTCodeRead* coderead = new ASTCodeRead($2); $$ = new ASTCodeStmt(); $$->CodeRead = coderead;}
+						| if_statement else_statement						{ASTCodeIfElse* codeifelse = new ASTCodeIfElse($1, $2); $$ = new ASTCodeStmt(); $$->CodeIfElse = codeifelse;}
+						| if_statement										{ASTCodeIfStmt* codeif = new ASTCodeIfStmt($1); $$ = new ASTCodeStmt(); $$->CodeIfStmt = codeif;}
+						| for_statement										{ASTCodeFor* codefor = new ASTCodeFor($1); $$ = new ASTCodeStmt(); $$->CodeFor = codefor;}
+						| while_statement									{ASTCodeWhile* codewhile = new ASTCodeWhile($1); $$ = new ASTCodeStmt(); $$->CodeWhile = codewhile;}
+						| goto_statement									{ASTCodeGoto* codegoto = new ASTCodeGoto($1); $$ = new ASTCodeStmt(); $$->CodeGoto = codegoto;}
+						| IDENTIFIER ':'									{ASTCodeLabel* codelabel = new ASTCodeLabel($1); $$ = new ASTCodeStmt(); $$->CodeLabel = codelabel;}
+						| code_statement PRINT print_statement ';'			{ASTMultiCodePrint* codeprint = new ASTMultiCodePrint($1, $3, false); $$ = new ASTCodeStmt(); $$->MultiCodePrint = codeprint;}
+						| code_statement PRINTLN print_statement ';'		{ASTMultiCodePrint* codeprint = new ASTMultiCodePrint($1, $3, true); $$ = new ASTCodeStmt(); $$->MultiCodePrint = codeprint;}
+						| code_statement READVAR identifiers ';'			{ASTMultiCodeRead* coderead = new ASTMultiCodeRead($1, $3); $$ = new ASTCodeStmt(); $$->MultiCodeRead = coderead;}
 						| code_statement EXIT_COMMAND ';' 					{exit(EXIT_SUCCESS);}
-						| code_statement if_statement else_statement		{;}
-						| code_statement if_statement						{;}
-						| code_statement for_statement						{;}
-						| code_statement while_statement					{;}
-						| code_statement goto_statement						{;}
-						| code_statement IDENTIFIER ':'						{;}
+						| code_statement if_statement else_statement		{ASTMultiCodeIfElse* codeifelse = new ASTMultiCodeIfElse($1, $2, $3); $$ = new ASTCodeStmt(); $$->MultiCodeIfElse = codeifelse;}
+						| code_statement if_statement						{ASTMultiCodeIfStmt* codeif = new ASTMultiCodeIfStmt($1, $2); $$ = new ASTCodeStmt(); $$->MultiCodeIfStmt = codeif;}
+						| code_statement for_statement						{ASTMultiCodeFor* codefor = new ASTMultiCodeFor($1, $2); $$ = new ASTCodeStmt(); $$->MultiCodeFor = codefor;}
+						| code_statement while_statement					{ASTMultiCodeWhile* codewhile = new ASTMultiCodeWhile($1, $2); $$ = new ASTCodeStmt(); $$->MultiCodeWhile = codewhile;}
+						| code_statement goto_statement						{ASTMultiCodeGoto* codegoto = new ASTMultiCodeGoto($1, $2); $$ = new ASTCodeStmt(); $$->MultiCodeGoto = codegoto;}
+						| code_statement IDENTIFIER ':'						{ASTMultiCodeLabel* codelabel = new ASTMultiCodeLabel($1, $2); $$ = new ASTCodeStmt(); $$->MultiCodeLabel = codelabel;}
 						;
 print_statement			: print_statement ',' final_print_statement 		{ASTMultiPrintStmt* mulprint = new ASTMultiPrintStmt($1, $3); $$ = new ASTPrintStmt(); $$->MulPrintStmt = mulprint;}
 						| final_print_statement								{ASTFinPrintStmt* finprint = new ASTFinPrintStmt($1); $$ = new ASTPrintStmt(); $$->FinPrintStmt = finprint; }
@@ -125,17 +141,17 @@ print_statement			: print_statement ',' final_print_statement 		{ASTMultiPrintSt
 final_print_statement	: identifiers 										{ASTFinalPrintStmtId* finalidprint = new ASTFinalPrintStmtId($1); $$ = new ASTFinalPrintStmt(); $$->FinalPrintStmtId = finalidprint;}
 						| TEXT												{ASTFinalPrintStmtText* textprint = new ASTFinalPrintStmtText($1); $$  = new ASTFinalPrintStmt(); $$->FinalPrintStmtText = textprint;}
 						;
-if_statement			: IF exp '{' code_statement '}'						
+if_statement			: IF exp '{' code_statement '}'						{$$ = new ASTIfStmt($2, $4);}
 						;
-else_statement			: ELSE '{' code_statement '}'						
-						| ELSE if_statement									
+else_statement			: ELSE '{' code_statement '}'						{ASTElse* elsestmt = new ASTElse($3); $$ = new ASTElseStmt(); $$-> ElseStmt = elsestmt;}
+						| ELSE if_statement									{ASTElseIf* elseif = new ASTElseIf($2); $$ = new ASTElseStmt(); $$->ElseIf = elseif;}
 						;
-for_statement			: FOR for_exp '{' code_statement '}'				
+for_statement			: FOR for_exp '{' code_statement '}'				{$$ = new ASTForStmt($2,$4);}
 						;
-for_exp					: IDENTIFIER EQUATE NUMBER ',' NUMBER									
-						| IDENTIFIER EQUATE NUMBER ',' NUMBER ',' NUMBER
+for_exp					: IDENTIFIER EQUATE NUMBER ',' NUMBER				{$$ = new ASTForExp($1, $3, $5);}					
+						| IDENTIFIER EQUATE NUMBER ',' NUMBER ',' NUMBER	{$$ = new ASTForExp($1, $3, $5, $7);}
 						;
-while_statement			: WHILELOOP exp '{' code_statement '}'				
+while_statement			: WHILELOOP exp '{' code_statement '}'				{$$ = new ASTWhileStmt($2,$4);}
 						;
 assignment				: identifiers EQUATE exp							{$$ = new ASTAssignment($1, $3); }
 						;
@@ -180,8 +196,8 @@ binop					: arithop											{$$=$1;}
 						| eqop												{$$=$1;}
 						| condop											{$$=$1;}
 						;
-goto_statement			: GOTO IDENTIFIER IF exp ';'							
-						| GOTO IDENTIFIER ';'								
+goto_statement			: GOTO IDENTIFIER IF exp ';'						{ASTGotoExp* gotostmt = new ASTGotoExp($2, $4); $$ = new ASTGotoStmt(); $$->GotoExp = gotostmt;}	
+						| GOTO IDENTIFIER ';'								{ASTGoto* gotostmt = new ASTGoto($2); $$ = new ASTGotoStmt(); $$->Goto = gotostmt;}
 						;
 
 %% /* C code */
