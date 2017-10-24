@@ -1,4 +1,4 @@
-b: lex.yy.c parser.tab.c ASTDefinitions.h
+b: lex.yy.c parser.tab.c ASTDefinitions.h Interpreter.cpp
 	g++ -std=c++11 -g lex.yy.c parser.tab.c -o b
 
 lex.yy.c: parser.tab.c scanner.l

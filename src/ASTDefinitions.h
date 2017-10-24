@@ -60,11 +60,22 @@ class ASTDeclMultiParams;
 class ASTGotoExp;
 class ASTGoto;
 class ASTGotoStmt;
-class ASTNode{
-// public:
-    // virtual void accept(Visitor *);
+
+class Visitor 
+{
+    public:
+
+    virtual void visit(class ASTNode* )=0;
+    virtual void visit(class ASTDeclBlockNode*)=0;
 };
 
+
+class ASTNode
+{
+     public:
+         virtual void accept(Visitor * v);
+};
+    
 //declaration block
 class ASTDeclBlockNode : public ASTNode{
 public:
@@ -75,8 +86,10 @@ public:
         this->decl_stmt = decl_stmt;
         this->code_block = code_block;
     }
-// public:
-    // void accept(Visitor *);
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 
 //declaration statement
@@ -598,9 +611,6 @@ public:
         this->num_index=num_index1;
         this->id_index=id_index;
     }
-    
-// public:
-    // virtual void accept(Visitor *);
 };
 // class ASTId:public ASTIdNode{
 // public:
@@ -665,8 +675,6 @@ public:
         this->id = id;
         this->exp = exp;
     }
-// public:
-    // void accept(Visitor *);
 };
 
 //goto statement
