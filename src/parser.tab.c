@@ -163,9 +163,19 @@ union YYSTYPE
 	class ASTAssignment* ASTAssignment;
 	class ASTPrintStmt* ASTPrintStmt;
 	class ASTFinalPrintStmt* ASTFinalPrintStmt;
+	class ASTCodeStmt* ASTCodeStmt;
+	class ASTIfStmt* ASTIfStmt;
+	class ASTElseStmt* ASTElseStmt;
+	class ASTForStmt* ASTForStmt;
+	class ASTWhileStmt* ASTWhileStmt;
+	class ASTGotoStmt* ASTGotoStmt;
+	class ASTForExp* ASTForExp;
+	class ASTCodeBlockNode* ASTCodeBlockNode;
+	class ASTDeclStmt* ASTDeclStmt;
+	class ASTDeclParams* ASTDeclParams;
+	class ASTDeclBlockNode* ASTDeclBlockNode;
 
-
-#line 169 "parser.tab.c" /* yacc.c:355  */
+#line 179 "parser.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -182,7 +192,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 186 "parser.tab.c" /* yacc.c:358  */
+#line 196 "parser.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -483,14 +493,14 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    86,    86,    88,    90,    91,    92,    94,    95,    97,
-      98,    99,   100,   101,   102,   103,   104,   105,   106,   107,
-     108,   109,   110,   111,   112,   113,   114,   115,   116,   117,
-     118,   120,   121,   123,   124,   126,   128,   129,   131,   133,
-     134,   136,   138,   140,   141,   142,   144,   145,   151,   152,
-     153,   155,   156,   157,   158,   159,   160,   161,   165,   166,
-     167,   168,   170,   171,   173,   174,   176,   177,   178,   179,
-     181,   182
+       0,   104,   104,   106,   108,   109,   110,   112,   113,   115,
+     116,   117,   118,   119,   120,   121,   122,   123,   124,   125,
+     126,   127,   128,   129,   130,   131,   132,   133,   134,   135,
+     136,   138,   139,   141,   142,   144,   146,   147,   149,   151,
+     152,   154,   156,   158,   159,   160,   162,   163,   169,   170,
+     171,   173,   174,   175,   176,   177,   178,   179,   183,   184,
+     185,   186,   188,   189,   191,   192,   194,   195,   196,   197,
+     199,   200
 };
 #endif
 
@@ -540,17 +550,17 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      15,   -24,    46,    -7,   -68,    44,   -68,   -12,    14,   -29,
-     -68,    51,    -7,   -68,   -68,   -68,    44,    43,   -68,    41,
-     166,    48,    50,     3,   -18,   -18,    44,    54,     3,     8,
-      49,    85,   -68,   -68,    55,    89,   -68,    -9,    96,    77,
-     -68,     3,   232,   -68,   -68,   -68,    13,   -68,   -68,    22,
-      80,   -68,   252,   -68,   -18,   -18,    86,    81,    76,   -68,
-      85,   -68,   -68,    91,   -68,    -8,   -68,   -68,     3,     3,
+      15,   -24,    46,    -7,   -68,    18,   -68,   -12,    14,   -29,
+     -68,    51,    -7,   -68,   -68,   -68,    18,    44,   -68,    43,
+     166,    50,    54,     3,   -18,   -18,    18,    55,     3,     8,
+      49,    89,   -68,   -68,    72,    99,   -68,    -9,   104,    67,
+     -68,     3,   232,   -68,   -68,   -68,    22,   -68,   -68,    28,
+      81,   -68,   252,   -68,   -18,   -18,    18,    82,    76,   -68,
+      89,   -68,   -68,    91,   -68,    -8,   -68,   -68,     3,     3,
      -68,    98,   166,   184,   -68,   -68,   -68,   -68,   -68,   -68,
      -68,   -68,   -68,   -68,   -68,   -68,   -68,   -68,   -68,   166,
      -68,   -68,   -68,   -68,     3,   -68,   -18,   -68,   -68,   166,
-      28,    38,    93,   -68,   -68,   -68,   -68,   166,   -68,   272,
+      38,    40,    93,   -68,   -68,   -68,   -68,   166,   -68,   272,
      210,    94,    65,   -68,   118,   272,   -68,   131,   -68,   -68,
      -68,   153,   -68,   100,   -68,   -68,   -68,   -68,   103,   111,
      -68
@@ -580,7 +590,7 @@ static const yytype_uint8 yydefact[] =
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -68,   -68,   -68,   141,   129,   -67,   -21,    52,   -27,    90,
+     -68,   -68,   -68,   141,   129,   -67,   -21,    52,   -27,    86,
      -17,   -68,   -16,    -6,   -26,   -68,    -5,   -68,   -68,   -68,
      -68,   -68,     0
 };
@@ -603,17 +613,17 @@ static const yytype_uint8 yytable[] =
       48,    50,   114,    44,    63,    11,     6,     1,   107,    70,
       64,     6,   117,   100,   101,    40,    44,     8,   108,    13,
      121,    14,   109,   110,    41,    13,     4,    14,    53,    48,
-      48,    95,    96,    21,    22,    23,    54,    55,    56,    57,
-      97,    96,    17,    44,    44,    28,   118,    96,   115,    21,
-      22,    23,    54,    55,    56,    57,   119,    96,     8,    20,
-      16,    28,    37,    58,    38,    60,    59,    60,    65,    44,
-      60,    48,    51,    67,    60,    61,    62,    61,    62,    58,
-      61,    62,   124,    68,    61,    62,    63,    13,    63,    14,
-      71,    63,    64,    72,    64,    63,   104,    64,    98,   103,
-     102,    64,    21,    22,    23,    54,    55,    56,    57,   106,
+      48,   102,     8,    21,    22,    23,    54,    55,    56,    57,
+      95,    96,    17,    44,    44,    28,    97,    96,   115,    21,
+      22,    23,    54,    55,    56,    57,   118,    96,   119,    96,
+      20,    28,    16,    58,    37,    60,    59,    60,    38,    44,
+      60,    48,    65,    51,    60,    61,    62,    61,    62,    58,
+      61,    62,   124,    72,    61,    62,    63,    13,    63,    14,
+      67,    63,    64,    68,    64,    63,   104,    64,    71,    98,
+     103,    64,    21,    22,    23,    54,    55,    56,    57,   106,
      111,   120,   128,   123,    28,    21,    22,    23,    54,    55,
-      56,    57,   129,   130,     7,    19,     0,    28,   116,     0,
-     105,     0,    58,     0,     0,   125,     0,    21,    22,    23,
+      56,    57,   129,   130,     7,    19,   105,    28,   116,     0,
+       0,     0,    58,     0,     0,   125,     0,    21,    22,    23,
       54,    55,    56,    57,     0,    58,     0,     0,   126,    28,
       21,    22,    23,    24,    25,    26,    27,     0,     0,     0,
        0,     0,    28,     0,     0,     0,     0,    58,     0,     0,
@@ -638,17 +648,17 @@ static const yytype_int8 yycheck[] =
       25,    26,    89,    28,    30,    37,    38,    12,    36,    38,
       30,    38,    99,    54,    55,    32,    41,    34,    65,    31,
      107,    33,    68,    69,    41,    31,     0,    33,    40,    54,
-      55,    38,    39,     4,     5,     6,     7,     8,     9,    10,
+      55,    56,    34,     4,     5,     6,     7,     8,     9,    10,
       38,    39,    11,    68,    69,    16,    38,    39,    94,     4,
-       5,     6,     7,     8,     9,    10,    38,    39,    34,    36,
-      39,    16,    34,    34,    34,   112,    37,   114,     3,    94,
-     117,    96,    38,    38,   121,   112,   112,   114,   114,    34,
-     117,   117,    37,    14,   121,   121,   112,    31,   114,    33,
-      14,   117,   112,    36,   114,   121,    40,   117,    38,    38,
-      34,   121,     4,     5,     6,     7,     8,     9,    10,    38,
+       5,     6,     7,     8,     9,    10,    38,    39,    38,    39,
+      36,    16,    39,    34,    34,   112,    37,   114,    34,    94,
+     117,    96,     3,    38,   121,   112,   112,   114,   114,    34,
+     117,   117,    37,    36,   121,   121,   112,    31,   114,    33,
+      38,   117,   112,    14,   114,   121,    40,   117,    14,    38,
+      38,   121,     4,     5,     6,     7,     8,     9,    10,    38,
       32,    38,    32,    39,    16,     4,     5,     6,     7,     8,
-       9,    10,    39,    32,     3,    16,    -1,    16,    96,    -1,
-      60,    -1,    34,    -1,    -1,    37,    -1,     4,     5,     6,
+       9,    10,    39,    32,     3,    16,    60,    16,    96,    -1,
+      -1,    -1,    34,    -1,    -1,    37,    -1,     4,     5,     6,
        7,     8,     9,    10,    -1,    34,    -1,    -1,    37,    16,
        4,     5,     6,     7,     8,     9,    10,    -1,    -1,    -1,
       -1,    -1,    16,    -1,    -1,    -1,    -1,    34,    -1,    -1,
@@ -680,7 +690,7 @@ static const yytype_uint8 yystos[] =
       38,    14,    36,    57,    15,    17,    18,    19,    20,    21,
       22,    23,    24,    25,    26,    27,    28,    29,    30,    36,
       60,    61,    62,    63,    64,    38,    39,    38,    38,    36,
-      49,    49,    34,    38,    40,    52,    38,    36,    51,    57,
+      49,    49,    59,    38,    40,    52,    38,    36,    51,    57,
       57,    32,    48,    42,    48,    57,    50,    48,    38,    38,
       38,    48,    38,    39,    37,    37,    37,    37,    32,    39,
       32
@@ -1386,373 +1396,427 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 86 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1392 "parser.tab.c" /* yacc.c:1646  */
+#line 104 "parser.y" /* yacc.c:1646  */
+    {(yyval.ASTDeclBlockNode) = new ASTDeclBlockNode((yyvsp[-2].ASTDeclStmt), (yyvsp[0].ASTCodeBlockNode));}
+#line 1402 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 88 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1398 "parser.tab.c" /* yacc.c:1646  */
+#line 106 "parser.y" /* yacc.c:1646  */
+    {(yyval.ASTCodeBlockNode) = new ASTCodeBlockNode((yyvsp[-1].ASTCodeStmt));}
+#line 1408 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 90 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1404 "parser.tab.c" /* yacc.c:1646  */
+#line 108 "parser.y" /* yacc.c:1646  */
+    {ASTParamsDeclStmt* declstmt = new ASTParamsDeclStmt((yyvsp[-1].ASTDeclParams)); (yyval.ASTDeclStmt) = new ASTDeclStmt(); (yyval.ASTDeclStmt)->ParamsDeclStmt = declstmt;}
+#line 1414 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 91 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1410 "parser.tab.c" /* yacc.c:1646  */
+#line 109 "parser.y" /* yacc.c:1646  */
+    {ASTMultiDeclStmt* declstmt = new ASTMultiDeclStmt((yyvsp[-1].ASTDeclStmt), (yyvsp[0].ASTDeclStmt)); (yyval.ASTDeclStmt) = new ASTDeclStmt(); (yyval.ASTDeclStmt)->MultiDeclStmt = declstmt;}
+#line 1420 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 92 "parser.y" /* yacc.c:1646  */
+#line 110 "parser.y" /* yacc.c:1646  */
     {;}
-#line 1416 "parser.tab.c" /* yacc.c:1646  */
+#line 1426 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 94 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1422 "parser.tab.c" /* yacc.c:1646  */
+#line 112 "parser.y" /* yacc.c:1646  */
+    {ASTDeclIdParams* declparam = new ASTDeclIdParams((yyvsp[0].ASTIdNode)); (yyval.ASTDeclParams) = new ASTDeclParams(); (yyval.ASTDeclParams)->DeclIdParams = declparam;}
+#line 1432 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 95 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1428 "parser.tab.c" /* yacc.c:1646  */
+#line 113 "parser.y" /* yacc.c:1646  */
+    {ASTDeclMultiParams* declparam = new ASTDeclMultiParams((yyvsp[-2].ASTDeclParams), (yyvsp[0].ASTDeclParams)); (yyval.ASTDeclParams) = new ASTDeclParams(); (yyval.ASTDeclParams)->DeclMultiParams = declparam;}
+#line 1438 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 97 "parser.y" /* yacc.c:1646  */
+#line 115 "parser.y" /* yacc.c:1646  */
     {exit(EXIT_SUCCESS);}
-#line 1434 "parser.tab.c" /* yacc.c:1646  */
+#line 1444 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 98 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1440 "parser.tab.c" /* yacc.c:1646  */
+#line 116 "parser.y" /* yacc.c:1646  */
+    {ASTCodeAssignment* codeassign = new ASTCodeAssignment((yyvsp[-1].ASTAssignment)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeAssignment = codeassign; }
+#line 1450 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 99 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1446 "parser.tab.c" /* yacc.c:1646  */
+#line 117 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodeAssignment* codeassign = new ASTMultiCodeAssignment((yyvsp[-2].ASTCodeStmt), (yyvsp[-1].ASTAssignment)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeAssignment = codeassign;}
+#line 1456 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 100 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1452 "parser.tab.c" /* yacc.c:1646  */
+#line 118 "parser.y" /* yacc.c:1646  */
+    {ASTCodePrint* codeprint = new ASTCodePrint((yyvsp[-1].ASTPrintStmt), false); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodePrint = codeprint;}
+#line 1462 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 101 "parser.y" /* yacc.c:1646  */
-    {printf("\n");}
-#line 1458 "parser.tab.c" /* yacc.c:1646  */
+#line 119 "parser.y" /* yacc.c:1646  */
+    {ASTCodePrint* codeprint = new ASTCodePrint((yyvsp[-1].ASTPrintStmt), true); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodePrint = codeprint;}
+#line 1468 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 102 "parser.y" /* yacc.c:1646  */
-    {printf("reading the identifier\n");}
-#line 1464 "parser.tab.c" /* yacc.c:1646  */
+#line 120 "parser.y" /* yacc.c:1646  */
+    {ASTCodeRead* coderead = new ASTCodeRead((yyvsp[-1].ASTIdNode)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeRead = coderead;}
+#line 1474 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 103 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1470 "parser.tab.c" /* yacc.c:1646  */
+#line 121 "parser.y" /* yacc.c:1646  */
+    {ASTCodeIfElse* codeifelse = new ASTCodeIfElse((yyvsp[-1].ASTIfStmt), (yyvsp[0].ASTElseStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeIfElse = codeifelse;}
+#line 1480 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 104 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1476 "parser.tab.c" /* yacc.c:1646  */
+#line 122 "parser.y" /* yacc.c:1646  */
+    {ASTCodeIfStmt* codeif = new ASTCodeIfStmt((yyvsp[0].ASTIfStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeIfStmt = codeif;}
+#line 1486 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 105 "parser.y" /* yacc.c:1646  */
-    {printf("entered for loop\n");}
-#line 1482 "parser.tab.c" /* yacc.c:1646  */
+#line 123 "parser.y" /* yacc.c:1646  */
+    {ASTCodeFor* codefor = new ASTCodeFor((yyvsp[0].ASTForStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeFor = codefor;}
+#line 1492 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 106 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1488 "parser.tab.c" /* yacc.c:1646  */
+#line 124 "parser.y" /* yacc.c:1646  */
+    {ASTCodeWhile* codewhile = new ASTCodeWhile((yyvsp[0].ASTWhileStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeWhile = codewhile;}
+#line 1498 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 107 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1494 "parser.tab.c" /* yacc.c:1646  */
+#line 125 "parser.y" /* yacc.c:1646  */
+    {ASTCodeGoto* codegoto = new ASTCodeGoto((yyvsp[0].ASTGotoStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeGoto = codegoto;}
+#line 1504 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 108 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1500 "parser.tab.c" /* yacc.c:1646  */
+#line 126 "parser.y" /* yacc.c:1646  */
+    {ASTCodeLabel* codelabel = new ASTCodeLabel((yyvsp[-1].id)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeLabel = codelabel;}
+#line 1510 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 109 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1506 "parser.tab.c" /* yacc.c:1646  */
+#line 127 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodePrint* codeprint = new ASTMultiCodePrint((yyvsp[-3].ASTCodeStmt), (yyvsp[-1].ASTPrintStmt), false); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodePrint = codeprint;}
+#line 1516 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 110 "parser.y" /* yacc.c:1646  */
-    {printf("\n");}
-#line 1512 "parser.tab.c" /* yacc.c:1646  */
+#line 128 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodePrint* codeprint = new ASTMultiCodePrint((yyvsp[-3].ASTCodeStmt), (yyvsp[-1].ASTPrintStmt), true); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodePrint = codeprint;}
+#line 1522 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 111 "parser.y" /* yacc.c:1646  */
-    {printf("reading the identifier\n");}
-#line 1518 "parser.tab.c" /* yacc.c:1646  */
+#line 129 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodeRead* coderead = new ASTMultiCodeRead((yyvsp[-3].ASTCodeStmt), (yyvsp[-1].ASTIdNode)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeRead = coderead;}
+#line 1528 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 112 "parser.y" /* yacc.c:1646  */
+#line 130 "parser.y" /* yacc.c:1646  */
     {exit(EXIT_SUCCESS);}
-#line 1524 "parser.tab.c" /* yacc.c:1646  */
+#line 1534 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 113 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1530 "parser.tab.c" /* yacc.c:1646  */
+#line 131 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodeIfElse* codeifelse = new ASTMultiCodeIfElse((yyvsp[-2].ASTCodeStmt), (yyvsp[-1].ASTIfStmt), (yyvsp[0].ASTElseStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeIfElse = codeifelse;}
+#line 1540 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 114 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1536 "parser.tab.c" /* yacc.c:1646  */
+#line 132 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodeIfStmt* codeif = new ASTMultiCodeIfStmt((yyvsp[-1].ASTCodeStmt), (yyvsp[0].ASTIfStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeIfStmt = codeif;}
+#line 1546 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 115 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1542 "parser.tab.c" /* yacc.c:1646  */
+#line 133 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodeFor* codefor = new ASTMultiCodeFor((yyvsp[-1].ASTCodeStmt), (yyvsp[0].ASTForStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeFor = codefor;}
+#line 1552 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 116 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1548 "parser.tab.c" /* yacc.c:1646  */
+#line 134 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodeWhile* codewhile = new ASTMultiCodeWhile((yyvsp[-1].ASTCodeStmt), (yyvsp[0].ASTWhileStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeWhile = codewhile;}
+#line 1558 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 117 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1554 "parser.tab.c" /* yacc.c:1646  */
+#line 135 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodeGoto* codegoto = new ASTMultiCodeGoto((yyvsp[-1].ASTCodeStmt), (yyvsp[0].ASTGotoStmt)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeGoto = codegoto;}
+#line 1564 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 118 "parser.y" /* yacc.c:1646  */
-    {;}
-#line 1560 "parser.tab.c" /* yacc.c:1646  */
+#line 136 "parser.y" /* yacc.c:1646  */
+    {ASTMultiCodeLabel* codelabel = new ASTMultiCodeLabel((yyvsp[-2].ASTCodeStmt), (yyvsp[-1].id)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeLabel = codelabel;}
+#line 1570 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 120 "parser.y" /* yacc.c:1646  */
+#line 138 "parser.y" /* yacc.c:1646  */
     {ASTMultiPrintStmt* mulprint = new ASTMultiPrintStmt((yyvsp[-2].ASTPrintStmt), (yyvsp[0].ASTFinalPrintStmt)); (yyval.ASTPrintStmt) = new ASTPrintStmt(); (yyval.ASTPrintStmt)->MulPrintStmt = mulprint;}
-#line 1566 "parser.tab.c" /* yacc.c:1646  */
+#line 1576 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 121 "parser.y" /* yacc.c:1646  */
+#line 139 "parser.y" /* yacc.c:1646  */
     {ASTFinPrintStmt* finprint = new ASTFinPrintStmt((yyvsp[0].ASTFinalPrintStmt)); (yyval.ASTPrintStmt) = new ASTPrintStmt(); (yyval.ASTPrintStmt)->FinPrintStmt = finprint; }
-#line 1572 "parser.tab.c" /* yacc.c:1646  */
+#line 1582 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 123 "parser.y" /* yacc.c:1646  */
+#line 141 "parser.y" /* yacc.c:1646  */
     {ASTFinalPrintStmtId* finalidprint = new ASTFinalPrintStmtId((yyvsp[0].ASTIdNode)); (yyval.ASTFinalPrintStmt) = new ASTFinalPrintStmt(); (yyval.ASTFinalPrintStmt)->FinalPrintStmtId = finalidprint;}
-#line 1578 "parser.tab.c" /* yacc.c:1646  */
+#line 1588 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 124 "parser.y" /* yacc.c:1646  */
+#line 142 "parser.y" /* yacc.c:1646  */
     {ASTFinalPrintStmtText* textprint = new ASTFinalPrintStmtText((yyvsp[0].str)); (yyval.ASTFinalPrintStmt)  = new ASTFinalPrintStmt(); (yyval.ASTFinalPrintStmt)->FinalPrintStmtText = textprint;}
-#line 1584 "parser.tab.c" /* yacc.c:1646  */
+#line 1594 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 35:
+#line 144 "parser.y" /* yacc.c:1646  */
+    {(yyval.ASTIfStmt) = new ASTIfStmt((yyvsp[-3].ASTExp), (yyvsp[-1].ASTCodeStmt));}
+#line 1600 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 36:
+#line 146 "parser.y" /* yacc.c:1646  */
+    {ASTElse* elsestmt = new ASTElse((yyvsp[-1].ASTCodeStmt)); (yyval.ASTElseStmt) = new ASTElseStmt(); (yyval.ASTElseStmt)-> ElseStmt = elsestmt;}
+#line 1606 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 37:
+#line 147 "parser.y" /* yacc.c:1646  */
+    {ASTElseIf* elseif = new ASTElseIf((yyvsp[0].ASTIfStmt)); (yyval.ASTElseStmt) = new ASTElseStmt(); (yyval.ASTElseStmt)->ElseIf = elseif;}
+#line 1612 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 149 "parser.y" /* yacc.c:1646  */
+    {(yyval.ASTForStmt) = new ASTForStmt((yyvsp[-3].ASTForExp),(yyvsp[-1].ASTCodeStmt));}
+#line 1618 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 39:
+#line 151 "parser.y" /* yacc.c:1646  */
+    {(yyval.ASTForExp) = new ASTForExp((yyvsp[-4].id), (yyvsp[-2].num), (yyvsp[0].num));}
+#line 1624 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 40:
+#line 152 "parser.y" /* yacc.c:1646  */
+    {(yyval.ASTForExp) = new ASTForExp((yyvsp[-6].id), (yyvsp[-4].num), (yyvsp[-2].num), (yyvsp[0].num));}
+#line 1630 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 41:
+#line 154 "parser.y" /* yacc.c:1646  */
+    {(yyval.ASTWhileStmt) = new ASTWhileStmt((yyvsp[-3].ASTExp),(yyvsp[-1].ASTCodeStmt));}
+#line 1636 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 138 "parser.y" /* yacc.c:1646  */
+#line 156 "parser.y" /* yacc.c:1646  */
     {(yyval.ASTAssignment) = new ASTAssignment((yyvsp[-2].ASTIdNode), (yyvsp[0].ASTExp)); }
-#line 1590 "parser.tab.c" /* yacc.c:1646  */
+#line 1642 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 140 "parser.y" /* yacc.c:1646  */
+#line 158 "parser.y" /* yacc.c:1646  */
     {ASTExpTerm* expterm = new ASTExpTerm((yyvsp[0].ASTTerm)); (yyval.ASTExp) = new ASTExp(); (yyval.ASTExp)->ExpTerm = expterm;}
-#line 1596 "parser.tab.c" /* yacc.c:1646  */
+#line 1648 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 141 "parser.y" /* yacc.c:1646  */
+#line 159 "parser.y" /* yacc.c:1646  */
     {ASTExpOps* expops = new ASTExpOps((yyvsp[-2].ASTExp), (yyvsp[-1].id), (yyvsp[0].ASTExp)); (yyval.ASTExp) = new ASTExp(); (yyval.ASTExp)->ExpOps = expops;}
-#line 1602 "parser.tab.c" /* yacc.c:1646  */
+#line 1654 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 142 "parser.y" /* yacc.c:1646  */
+#line 160 "parser.y" /* yacc.c:1646  */
     {ASTExpParan* expparan = new ASTExpParan((yyvsp[-1].ASTExp)); (yyval.ASTExp)  = new ASTExp(); (yyval.ASTExp)->ExpParan = expparan; }
-#line 1608 "parser.tab.c" /* yacc.c:1646  */
+#line 1660 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 144 "parser.y" /* yacc.c:1646  */
+#line 162 "parser.y" /* yacc.c:1646  */
     {ASTTermNum* numterm = new ASTTermNum((yyvsp[0].num)); (yyval.ASTTerm)=new ASTTerm(); (yyval.ASTTerm)->NumTerm = numterm; cout<<"term created"<<(yyval.ASTTerm)->NumTerm->num<<endl;}
-#line 1614 "parser.tab.c" /* yacc.c:1646  */
+#line 1666 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 145 "parser.y" /* yacc.c:1646  */
+#line 163 "parser.y" /* yacc.c:1646  */
     {ASTTermId* idterm = new ASTTermId((yyvsp[0].ASTIdNode)); (yyval.ASTTerm)=new ASTTerm(); (yyval.ASTTerm)->IdTerm = idterm; cout<<"term id created"<<(yyval.ASTTerm)->IdTerm->id<<" "<<idterm->id<<endl;}
-#line 1620 "parser.tab.c" /* yacc.c:1646  */
+#line 1672 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 151 "parser.y" /* yacc.c:1646  */
+#line 169 "parser.y" /* yacc.c:1646  */
     {(yyval.ASTIdNode)=new ASTIdNode((yyvsp[0].id)); cout<<(yyval.ASTIdNode)->id<<"instace created"<<endl; }
-#line 1626 "parser.tab.c" /* yacc.c:1646  */
+#line 1678 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 152 "parser.y" /* yacc.c:1646  */
+#line 170 "parser.y" /* yacc.c:1646  */
     {(yyval.ASTIdNode)=new ASTIdNode((yyvsp[-1].id),(yyvsp[0].size), "NULL");cout<<(yyval.ASTIdNode)->id_index<<"array num accessed"<<endl;}
-#line 1632 "parser.tab.c" /* yacc.c:1646  */
+#line 1684 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 153 "parser.y" /* yacc.c:1646  */
+#line 171 "parser.y" /* yacc.c:1646  */
     {(yyval.ASTIdNode)=new ASTIdNode((yyvsp[-1].id),"-1",(yyvsp[0].index));cout<<(yyval.ASTIdNode)->id_index<<"array accessed"<<endl;}
-#line 1638 "parser.tab.c" /* yacc.c:1646  */
+#line 1690 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 155 "parser.y" /* yacc.c:1646  */
+#line 173 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="+";}
-#line 1644 "parser.tab.c" /* yacc.c:1646  */
+#line 1696 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 156 "parser.y" /* yacc.c:1646  */
+#line 174 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="-";}
-#line 1650 "parser.tab.c" /* yacc.c:1646  */
+#line 1702 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 157 "parser.y" /* yacc.c:1646  */
+#line 175 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="*";}
-#line 1656 "parser.tab.c" /* yacc.c:1646  */
+#line 1708 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 158 "parser.y" /* yacc.c:1646  */
+#line 176 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="/";}
-#line 1662 "parser.tab.c" /* yacc.c:1646  */
+#line 1714 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 159 "parser.y" /* yacc.c:1646  */
+#line 177 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="%";}
-#line 1668 "parser.tab.c" /* yacc.c:1646  */
+#line 1720 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 160 "parser.y" /* yacc.c:1646  */
+#line 178 "parser.y" /* yacc.c:1646  */
     {(yyval.id)=">>";}
-#line 1674 "parser.tab.c" /* yacc.c:1646  */
+#line 1726 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 161 "parser.y" /* yacc.c:1646  */
+#line 179 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="<<";}
-#line 1680 "parser.tab.c" /* yacc.c:1646  */
+#line 1732 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 165 "parser.y" /* yacc.c:1646  */
+#line 183 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="<";}
-#line 1686 "parser.tab.c" /* yacc.c:1646  */
+#line 1738 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 166 "parser.y" /* yacc.c:1646  */
+#line 184 "parser.y" /* yacc.c:1646  */
     {(yyval.id)=">";}
-#line 1692 "parser.tab.c" /* yacc.c:1646  */
+#line 1744 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 167 "parser.y" /* yacc.c:1646  */
+#line 185 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="<=";}
-#line 1698 "parser.tab.c" /* yacc.c:1646  */
+#line 1750 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 168 "parser.y" /* yacc.c:1646  */
+#line 186 "parser.y" /* yacc.c:1646  */
     {(yyval.id)=">=";}
-#line 1704 "parser.tab.c" /* yacc.c:1646  */
+#line 1756 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 170 "parser.y" /* yacc.c:1646  */
+#line 188 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="==";}
-#line 1710 "parser.tab.c" /* yacc.c:1646  */
+#line 1762 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 171 "parser.y" /* yacc.c:1646  */
+#line 189 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="!=";}
-#line 1716 "parser.tab.c" /* yacc.c:1646  */
+#line 1768 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 173 "parser.y" /* yacc.c:1646  */
+#line 191 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="&&";}
-#line 1722 "parser.tab.c" /* yacc.c:1646  */
+#line 1774 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 174 "parser.y" /* yacc.c:1646  */
+#line 192 "parser.y" /* yacc.c:1646  */
     {(yyval.id)="||";}
-#line 1728 "parser.tab.c" /* yacc.c:1646  */
+#line 1780 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 176 "parser.y" /* yacc.c:1646  */
+#line 194 "parser.y" /* yacc.c:1646  */
     {(yyval.id)=(yyvsp[0].id);}
-#line 1734 "parser.tab.c" /* yacc.c:1646  */
+#line 1786 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 177 "parser.y" /* yacc.c:1646  */
+#line 195 "parser.y" /* yacc.c:1646  */
     {(yyval.id)=(yyvsp[0].id);}
-#line 1740 "parser.tab.c" /* yacc.c:1646  */
+#line 1792 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 178 "parser.y" /* yacc.c:1646  */
+#line 196 "parser.y" /* yacc.c:1646  */
     {(yyval.id)=(yyvsp[0].id);}
-#line 1746 "parser.tab.c" /* yacc.c:1646  */
+#line 1798 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 179 "parser.y" /* yacc.c:1646  */
+#line 197 "parser.y" /* yacc.c:1646  */
     {(yyval.id)=(yyvsp[0].id);}
-#line 1752 "parser.tab.c" /* yacc.c:1646  */
+#line 1804 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 70:
+#line 199 "parser.y" /* yacc.c:1646  */
+    {ASTGotoExp* gotostmt = new ASTGotoExp((yyvsp[-3].id), (yyvsp[-1].ASTExp)); (yyval.ASTGotoStmt) = new ASTGotoStmt(); (yyval.ASTGotoStmt)->GotoExp = gotostmt;}
+#line 1810 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 71:
+#line 200 "parser.y" /* yacc.c:1646  */
+    {ASTGoto* gotostmt = new ASTGoto((yyvsp[-1].id)); (yyval.ASTGotoStmt) = new ASTGotoStmt(); (yyval.ASTGotoStmt)->Goto = gotostmt;}
+#line 1816 "parser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1756 "parser.tab.c" /* yacc.c:1646  */
+#line 1820 "parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1980,7 +2044,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 185 "parser.y" /* yacc.c:1906  */
+#line 203 "parser.y" /* yacc.c:1906  */
  /* C code */
 int computeSymbolIndex(char token)
 {

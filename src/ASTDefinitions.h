@@ -49,6 +49,17 @@ class ASTMultiCodeFor;
 class ASTMultiCodeWhile;
 class ASTMultiCodeGoto;
 class ASTMultiCodeLabel; 
+class ASTElse;
+class ASTElseIf;
+class ASTForStmt;
+class ASTCodeStmt;
+class ASTParamsDeclStmt;
+class ASTMultiDeclStmt;
+class ASTDeclIdParams;
+class ASTDeclMultiParams;
+class ASTGotoExp;
+class ASTGoto;
+class ASTGotoStmt;
 class ASTNode{
 // public:
     // virtual void accept(Visitor *);
@@ -59,34 +70,57 @@ class ASTDeclBlockNode : public ASTNode{
 public:
     ASTDeclStmt * decl_stmt;
     ASTCodeBlockNode  *code_block;
+    ASTDeclBlockNode(ASTDeclStmt* decl_stmt, ASTCodeBlockNode* code_block)
+    {
+        this->decl_stmt = decl_stmt;
+        this->code_block = code_block;
+    }
 // public:
     // void accept(Visitor *);
 };
 
 //declaration statement
-class ASTDeclStmt:public ASTDeclBlockNode{
+class ASTDeclStmt{
+public:
+    union{
+        ASTParamsDeclStmt* ParamsDeclStmt;
+        ASTMultiDeclStmt* MultiDeclStmt;
+    };
 
 };
 class ASTParamsDeclStmt:public ASTDeclStmt{
 public:
     ASTDeclParams *params;
+    ASTParamsDeclStmt(ASTDeclParams* params)
+    {
+        this->params = params;
+    }
 };
 class ASTMultiDeclStmt:public ASTDeclStmt{
 public:
     ASTDeclStmt *stmt1;
     ASTDeclStmt *stmt2;
+    ASTMultiDeclStmt(ASTDeclStmt* stmt1, ASTDeclStmt* stmt2)
+    {
+        this->stmt1 = stmt1;
+        this->stmt2 = stmt2;
+    }
 };
 
 //code block
-class ASTCodeBlockNode : public ASTDeclBlockNode{ 
+class ASTCodeBlockNode{ 
     public:
         ASTCodeStmt * code_stmt;
+        ASTCodeBlockNode(ASTCodeStmt* code_stmt)
+        {
+            this->code_stmt = code_stmt;
+        }
     // public:
         // void accept(Visitor *);
 };
 
 //code statements
-class ASTCodeStmt:public ASTCodeBlockNode{
+class ASTCodeStmt{
 public:
     union{
         ASTCodeAssignment* CodeAssignment;
@@ -130,9 +164,11 @@ public:
 class ASTCodePrint:public ASTCodeStmt{
 public:
     ASTPrintStmt *stmt;
-    ASTCodePrint(ASTPrintStmt* stmt)
+    bool newline;
+    ASTCodePrint(ASTPrintStmt* stmt, bool newline)
     {
         this->stmt = stmt;
+        this->newline = newline;
     }
 };
 class ASTCodeRead:public ASTCodeStmt{
@@ -195,12 +231,14 @@ public:
 };
 class ASTMultiCodePrint:public ASTCodeStmt{
 public:
+    bool newline;
     ASTCodeStmt *stmt1;
     ASTPrintStmt *stmt2;
-    ASTMultiCodePrint(ASTCodeStmt* stmt1, ASTPrintStmt* stmt2)
+    ASTMultiCodePrint(ASTCodeStmt* stmt1, ASTPrintStmt* stmt2, bool newline)
     {
         this->stmt1 = stmt1;
         this->stmt2 = stmt2;
+        this->newline = newline;
     }
 };
 class ASTMultiCodeRead:public ASTCodeStmt{
@@ -218,7 +256,7 @@ public:
     ASTCodeStmt *stmt;
     ASTIfStmt *ifstmt;
     ASTElseStmt *elsestmt;
-    ASTMultiCodeIfElse(ASTCodeStmt* stmt, ASTIfStmt* ifstmt, ASElseStmt* elsestmt)
+    ASTMultiCodeIfElse(ASTCodeStmt* stmt, ASTIfStmt* ifstmt, ASTElseStmt* elsestmt)
     {
         this->stmt = stmt;
         this->ifstmt = ifstmt;
@@ -239,7 +277,7 @@ class ASTMultiCodeFor:public ASTCodeStmt{
 public:
     ASTCodeStmt *stmt1;
     ASTForStmt *stmt2;
-    ASTMultiCodeFor(ASTCodeStmt* stmt1, ASTCodeStmt* stmt2)
+    ASTMultiCodeFor(ASTCodeStmt* stmt1, ASTForStmt* stmt2)
     {
         this->stmt1 = stmt1;
         this->stmt2 = stmt2;
@@ -280,7 +318,7 @@ public:
 //print statement
 class ASTPrintStmt:public ASTCodeStmt{
 public:
-    bool newline;    
+    // bool newline;    
     union{
         ASTMultiPrintStmt* MulPrintStmt;
         ASTFinPrintStmt* FinPrintStmt;  
@@ -307,7 +345,7 @@ public:
 };
 
 //final print statement
-class ASTFinalPrintStmt:public ASTCodeStmt, public ASTPrintStmt{
+class ASTFinalPrintStmt: public ASTPrintStmt{
 public:
     union{    
         ASTFinalPrintStmtId* FinalPrintStmtId;
@@ -336,19 +374,37 @@ class ASTIfStmt:public ASTCodeStmt{
 public:
     ASTExp *exp;
     ASTCodeStmt *stmt;
+    ASTIfStmt(ASTExp* exp, ASTCodeStmt* stmt)
+    {
+        this->exp = exp;
+        this->stmt = stmt;
+    }
 };
 
 //else statement
 class ASTElseStmt:public ASTCodeStmt{
+public:
+    union{
+        ASTElse* ElseStmt;
+        ASTElseIf* ElseIf;
+    };
 
 };
 class ASTElse:public ASTElseStmt{
 public:
     ASTCodeStmt *stmt;
+    ASTElse(ASTCodeStmt* stmt)
+    {
+        this->stmt = stmt;
+    }
 };
 class ASTElseIf:public ASTElseStmt{
 public:
     ASTIfStmt *if_stmt;
+    ASTElseIf(ASTIfStmt* if_stmt)
+    {
+        this->if_stmt = if_stmt;
+    }
 };
 
 //for statement
@@ -356,15 +412,27 @@ class ASTForStmt:public ASTCodeStmt{
 public:
     ASTForExp *exp;
     ASTCodeStmt *stmt;
+    ASTForStmt(ASTForExp* exp, ASTCodeStmt* stmt)
+    {
+        this->exp = exp;
+        this->stmt = stmt;
+    }
 };
 
 //for expression
-class ASTForExp:public ASTForStmt{
+class ASTForExp{
 public:
     string id;
     int num1;
     int num2;
     int num3;
+    ASTForExp(string id, int num1, int num2, int num3=1)
+    {
+        this->id = id;
+        this->num1 = num1;
+        this->num2 = num2;
+        this->num3 = num3;
+    }
 };
 
 //while statement
@@ -372,6 +440,11 @@ class ASTWhileStmt:public ASTCodeStmt{
 public:
     ASTExp *exp;
     ASTCodeStmt *stmt;
+    ASTWhileStmt(ASTExp* exp, ASTCodeStmt* stmt)
+    {
+        this->exp = exp;
+        this->stmt = stmt;
+    }
 };
 
 //Expression
@@ -557,21 +630,30 @@ public:
 
 //declaration parameters
 class ASTDeclParams:public ASTDeclStmt{
-
+public:
+    union{
+        ASTDeclMultiParams* DeclMultiParams;
+        ASTDeclIdParams* DeclIdParams;
+    };
 };
 class ASTDeclMultiParams:public ASTDeclParams{
 public:
    ASTDeclParams *param1;
-   ASTDeclParams *param2; 
+   ASTDeclParams *param2;
+   ASTDeclMultiParams(ASTDeclParams* param1, ASTDeclParams* param2)
+   {
+       this->param1 = param1;
+       this->param2 = param2;
+   } 
 };
 class ASTDeclIdParams:public ASTDeclParams{
 public:
     ASTIdNode *id;
+    ASTDeclIdParams(ASTIdNode* id)
+    {
+        this->id = id;
+    }
 };
-
-
-
-
 
 //assignment
 class ASTAssignment:public ASTCodeStmt{
@@ -589,14 +671,28 @@ public:
 
 //goto statement
 class ASTGotoStmt:public ASTCodeStmt{
-
+public:
+    union{
+        ASTGoto* Goto;
+        ASTGotoExp* GotoExp;
+    };
 };
 class ASTGoto:public ASTGotoStmt{
 public:
     string id;
+    ASTGoto(string id)
+    {
+        this->id = id;
+    }
+
 };
 class ASTGotoExp: public ASTGotoStmt{
 public:
     string id;
     ASTExp *exp;
+    ASTGotoExp(string id, ASTExp* exp)
+    {
+        this->id = id;
+        this->exp = exp;
+    }
 };
