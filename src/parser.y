@@ -3,7 +3,8 @@
 // #include <stdlib.h>
 // #include <string.h>
 #include<bits/stdc++.h>
-#include "ASTDefinitions.h"
+
+#include "Interpreter.cpp"
 using namespace std;
 void yyerror(char *s);  //C declarations used in actions
 int yylex(void);
@@ -11,6 +12,7 @@ int symbols[52];
 int symbolVal(char symbol);
 void updateSymbolVal(char symbol, int val);
 char* print_text(char* str);
+class ASTDeclBlockNode * root;
 %}
 
 %union 
@@ -101,12 +103,12 @@ char* print_text(char* str);
 %%
 
 /* descriptions of expected inputs 			corresponding actions(in C) */
-declblock 				: DECL_BLOCK '{' decl_statement '}'	codeblock		{$$ = new ASTDeclBlockNode($3, $5);}
+declblock 				: DECL_BLOCK '{' decl_statement '}'	codeblock		{$$ = new ASTDeclBlockNode($3, $5); root = $$;}
 						;
 codeblock 				: CODE_BLOCK '{' code_statement '}'					{$$ = new ASTCodeBlockNode($3);}
 						;
-decl_statement 			: DATATYPE decl_params ';'							{ASTParamsDeclStmt* declstmt = new ASTParamsDeclStmt($2); $$ = new ASTDeclStmt(); $$->ParamsDeclStmt = declstmt;}
-						| decl_statement decl_statement						{ASTMultiDeclStmt* declstmt = new ASTMultiDeclStmt($1, $2); $$ = new ASTDeclStmt(); $$->MultiDeclStmt = declstmt;}
+decl_statement 			: DATATYPE decl_params ';'							{ASTParamsDeclStmt* declstmt = new ASTParamsDeclStmt($2); $$ = new ASTDeclStmt(); $$->ParamsDeclStmt = declstmt; cout<<$$->ParamsDeclStmt<<"reduction "<<endl;}
+						| decl_statement decl_statement						{ASTMultiDeclStmt* declstmt = new ASTMultiDeclStmt($1, $2); $$ = new ASTDeclStmt(); $$->MultiDeclStmt = declstmt; cout<<"reduction not happef"<<endl;}
 						| ';'												{;}
 						;
 decl_params				: identifiers										{ASTDeclIdParams* declparam = new ASTDeclIdParams($1); $$ = new ASTDeclParams(); $$->DeclIdParams = declparam;}
@@ -248,10 +250,14 @@ void yyerror (char *s) { fprintf(stderr, "%s\n",s);}
 
 int main(void){
 	/* init symbol table*/
-	int i;
-	for(i=0;i<52;i++){
-		symbols[i] = 0;
-	}
-	return yyparse();
+	yyparse();
+<<<<<<< HEAD
+        Interpreter* inter = new Interpreter();
+        root->accept(inter);
+=======
+
+    Interpreter* inter = new Interpreter();
+	root->accept(inter);
+>>>>>>> bebf559e90410766f6bb21d7e75d596c2f68d9bb
 }
 

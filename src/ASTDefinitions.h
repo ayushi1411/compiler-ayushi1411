@@ -60,11 +60,28 @@ class ASTDeclMultiParams;
 class ASTGotoExp;
 class ASTGoto;
 class ASTGotoStmt;
-class ASTNode{
-// public:
-    // virtual void accept(Visitor *);
+
+class Visitor 
+{
+    public:
+
+    virtual void visit(class ASTNode* )=0;
+    virtual void visit(class ASTDeclBlockNode*)=0;
+    virtual void visit (class ASTParamsDeclStmt* )=0;    
+    virtual void visit (class ASTMultiDeclStmt*)=0 ;
+    virtual void visit (class ASTDeclStmt*)=0;
+    virtual void visit (class ASTDeclParams*)=0;
+    virtual void visit(class ASTDeclMultiParams*)=0;
+    virtual void visit(class ASTDeclIdParams*)=0;
 };
 
+
+class ASTNode
+{
+     public:
+         virtual void accept(Visitor * v)=0;
+};
+    
 //declaration block
 class ASTDeclBlockNode : public ASTNode{
 public:
@@ -75,18 +92,29 @@ public:
         this->decl_stmt = decl_stmt;
         this->code_block = code_block;
     }
-// public:
-    // void accept(Visitor *);
+    void accept(Visitor* v)
+    {
+        cout<<"visiting accept of declblock "<<endl;  
+        v->visit(this);
+    }
 };
 
 //declaration statement
 class ASTDeclStmt{
 public:
-    union{
+    // union{
         ASTParamsDeclStmt* ParamsDeclStmt;
         ASTMultiDeclStmt* MultiDeclStmt;
-    };
-
+    // };  
+     void accept(Visitor* v)
+    {
+         v->visit(this);
+    }
+    ASTDeclStmt()
+    {
+        this->ParamsDeclStmt = NULL;
+        this->MultiDeclStmt = NULL;
+    }
 };
 class ASTParamsDeclStmt:public ASTDeclStmt{
 public:
@@ -95,6 +123,10 @@ public:
     {
         this->params = params;
     }
+     void accept(Visitor* v)
+     {
+         v->visit(this);
+     }
 };
 class ASTMultiDeclStmt:public ASTDeclStmt{
 public:
@@ -105,6 +137,10 @@ public:
         this->stmt1 = stmt1;
         this->stmt2 = stmt2;
     }
+     void accept(Visitor *v)
+     {
+         v->visit(this);
+     }
 };
 
 //code block
@@ -561,16 +597,26 @@ public:
 
 
 //Identifiers
-class ASTIdNode: public ASTTerm{
+class ASTIdNode: public ASTTerm
+{
 public:
     string id;
     int num_index;
     string id_index;
     ASTIdNode(string id)
     {
-        this->id=id;
+        string newid = "";
+        for (int i=0;i<id.size();i++)
+        {
+            if ((id[i]>='a' && id[i]<='z') || (id[i]>='A' && id[i]<='Z') || (id[i]>='0' && id[i]<='9') )
+                newid += id[i];
+            else 
+                break;
+        }
+        this->id = newid;
+        // this->id=id;
         this->num_index=-1;
-        this->id_index='\0';
+        this->id_index="\0";
     }
     ASTIdNode(string id, string num_index, string id_index)
     {
@@ -592,15 +638,13 @@ public:
         if(id_index!="NULL")
             id_index = id_index.substr(1,id_index.size()-1);
         else
-            id_index='\0';
+            id_index="\0";
 
         
         this->num_index=num_index1;
         this->id_index=id_index;
     }
     
-// public:
-    // virtual void accept(Visitor *);
 };
 // class ASTId:public ASTIdNode{
 // public:
@@ -631,10 +675,18 @@ public:
 //declaration parameters
 class ASTDeclParams:public ASTDeclStmt{
 public:
-    union{
         ASTDeclMultiParams* DeclMultiParams;
         ASTDeclIdParams* DeclIdParams;
-    };
+        ASTDeclParams ()
+        {
+            this->DeclMultiParams=NULL;
+            this->DeclIdParams=NULL;
+        }
+        void accept(Visitor * v)
+        {
+            v->visit(this);
+        }
+
 };
 class ASTDeclMultiParams:public ASTDeclParams{
 public:
@@ -644,7 +696,11 @@ public:
    {
        this->param1 = param1;
        this->param2 = param2;
-   } 
+   }
+   void accept(Visitor * v)
+   {
+       v->visit(this);
+   }
 };
 class ASTDeclIdParams:public ASTDeclParams{
 public:
@@ -652,6 +708,10 @@ public:
     ASTDeclIdParams(ASTIdNode* id)
     {
         this->id = id;
+    }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
     }
 };
 
@@ -665,8 +725,6 @@ public:
         this->id = id;
         this->exp = exp;
     }
-// public:
-    // void accept(Visitor *);
 };
 
 //goto statement
