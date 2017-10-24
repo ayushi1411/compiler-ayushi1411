@@ -1,0 +1,102 @@
+g++ -std=c++11 -g lex.yy.c parser.tab.c -o b
+In file included from parser.y:7:0:
+Interpreter.cpp: In member function ‘virtual void Interpreter::visit(ASTDeclIdParams*)’:
+Interpreter.cpp:111:50: error: no match for ‘operator=’ (operand types are ‘std::pair<std::__cxx11::basic_string<char>, int>’ and ‘int’)
+                 symbol_table[make_pair(id->id,i) = 0];
+                                                  ^
+In file included from /usr/include/c++/5/bits/stl_algobase.h:64:0,
+                 from /usr/include/c++/5/bits/char_traits.h:39,
+                 from /usr/include/c++/5/ios:40,
+                 from /usr/include/c++/5/istream:38,
+                 from /usr/include/c++/5/sstream:38,
+                 from /usr/include/c++/5/complex:45,
+                 from /usr/include/c++/5/ccomplex:38,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/stdc++.h:52,
+                 from parser.y:5:
+/usr/include/c++/5/bits/stl_pair.h:158:7: note: candidate: std::pair<_T1, _T2>& std::pair<_T1, _T2>::operator=(const std::pair<_T1, _T2>&) [with _T1 = std::__cxx11::basic_string<char>; _T2 = int]
+       operator=(const pair& __p)
+       ^
+/usr/include/c++/5/bits/stl_pair.h:158:7: note:   no known conversion for argument 1 from ‘int’ to ‘const std::pair<std::__cxx11::basic_string<char>, int>&’
+/usr/include/c++/5/bits/stl_pair.h:166:7: note: candidate: std::pair<_T1, _T2>& std::pair<_T1, _T2>::operator=(std::pair<_T1, _T2>&&) [with _T1 = std::__cxx11::basic_string<char>; _T2 = int]
+       operator=(pair&& __p)
+       ^
+/usr/include/c++/5/bits/stl_pair.h:166:7: note:   no known conversion for argument 1 from ‘int’ to ‘std::pair<std::__cxx11::basic_string<char>, int>&&’
+/usr/include/c++/5/bits/stl_pair.h:177:2: note: candidate: template<class _U1, class _U2> std::pair<_T1, _T2>& std::pair<_T1, _T2>::operator=(const std::pair<_U1, _U2>&) [with _U1 = _U1; _U2 = _U2; _T1 = std::__cxx11::basic_string<char>; _T2 = int]
+  operator=(const pair<_U1, _U2>& __p)
+  ^
+/usr/include/c++/5/bits/stl_pair.h:177:2: note:   template argument deduction/substitution failed:
+In file included from parser.y:7:0:
+Interpreter.cpp:111:50: note:   mismatched types ‘const std::pair<_T1, _T2>’ and ‘int’
+                 symbol_table[make_pair(id->id,i) = 0];
+                                                  ^
+In file included from /usr/include/c++/5/bits/stl_algobase.h:64:0,
+                 from /usr/include/c++/5/bits/char_traits.h:39,
+                 from /usr/include/c++/5/ios:40,
+                 from /usr/include/c++/5/istream:38,
+                 from /usr/include/c++/5/sstream:38,
+                 from /usr/include/c++/5/complex:45,
+                 from /usr/include/c++/5/ccomplex:38,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/stdc++.h:52,
+                 from parser.y:5:
+/usr/include/c++/5/bits/stl_pair.h:186:2: note: candidate: template<class _U1, class _U2> std::pair<_T1, _T2>& std::pair<_T1, _T2>::operator=(std::pair<_U1, _U2>&&) [with _U1 = _U1; _U2 = _U2; _T1 = std::__cxx11::basic_string<char>; _T2 = int]
+  operator=(pair<_U1, _U2>&& __p)
+  ^
+/usr/include/c++/5/bits/stl_pair.h:186:2: note:   template argument deduction/substitution failed:
+In file included from parser.y:7:0:
+Interpreter.cpp:111:50: note:   mismatched types ‘std::pair<_T1, _T2>’ and ‘int’
+                 symbol_table[make_pair(id->id,i) = 0];
+                                                  ^
+parser.y: In function ‘int yyparse()’:
+parser.y:175:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+ arithop     : PLUS            {$$="+";}
+                ^
+parser.y:176:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | MINUS            {$$="-";}
+                ^
+parser.y:177:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | MULTIPLY           {$$="*";}
+                ^
+parser.y:178:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | DIVIDE           {$$="/";}
+                ^
+parser.y:179:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | MODULO           {$$="%";}
+                ^
+parser.y:180:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | RGTSHFT           {$$=">>";}
+                ^
+parser.y:181:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | LFTSHFT           {$$="<<";}
+                ^
+parser.y:185:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+ relop     : LT            {$$="<";}
+                ^
+parser.y:186:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | GT            {$$=">";}
+                ^
+parser.y:187:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | LE            {$$="<=";}
+                ^
+parser.y:188:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | GE            {$$=">=";}
+                ^
+parser.y:190:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+ eqop     : EQL            {$$="==";}
+                ^
+parser.y:191:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | NTEQL            {$$="!=";}
+                ^
+parser.y:193:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+ condop     : AND            {$$="&&";}
+                ^
+parser.y:194:16: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       | OR            {$$="||";}
+                ^
+parser.tab.c:1871:35: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       yyerror (YY_("syntax error"));
+                                   ^
+parser.tab.c:2015:35: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   yyerror (YY_("memory exhausted"));
+                                   ^
+makefile:2: recipe for target 'b' failed
+make: *** [b] Error 1

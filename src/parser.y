@@ -12,7 +12,7 @@ int symbols[52];
 int symbolVal(char symbol);
 void updateSymbolVal(char symbol, int val);
 char* print_text(char* str);
-class ASTNode * root;
+class ASTDeclBlockNode * root;
 %}
 
 %union 
@@ -107,8 +107,8 @@ declblock 				: DECL_BLOCK '{' decl_statement '}'	codeblock		{$$ = new ASTDeclBl
 						;
 codeblock 				: CODE_BLOCK '{' code_statement '}'					{$$ = new ASTCodeBlockNode($3);}
 						;
-decl_statement 			: DATATYPE decl_params ';'							{ASTParamsDeclStmt* declstmt = new ASTParamsDeclStmt($2); $$ = new ASTDeclStmt(); $$->ParamsDeclStmt = declstmt;}
-						| decl_statement decl_statement						{ASTMultiDeclStmt* declstmt = new ASTMultiDeclStmt($1, $2); $$ = new ASTDeclStmt(); $$->MultiDeclStmt = declstmt;}
+decl_statement 			: DATATYPE decl_params ';'							{ASTParamsDeclStmt* declstmt = new ASTParamsDeclStmt($2); $$ = new ASTDeclStmt(); $$->ParamsDeclStmt = declstmt; cout<<$$->ParamsDeclStmt<<"reduction "<<endl;}
+						| decl_statement decl_statement						{ASTMultiDeclStmt* declstmt = new ASTMultiDeclStmt($1, $2); $$ = new ASTDeclStmt(); $$->MultiDeclStmt = declstmt; cout<<"reduction not happef"<<endl;}
 						| ';'												{;}
 						;
 decl_params				: identifiers										{ASTDeclIdParams* declparam = new ASTDeclIdParams($1); $$ = new ASTDeclParams(); $$->DeclIdParams = declparam;}
@@ -250,8 +250,14 @@ void yyerror (char *s) { fprintf(stderr, "%s\n",s);}
 
 int main(void){
 	/* init symbol table*/
-	Interpreter* inter = new Interpreter();
+	yyparse();
+<<<<<<< HEAD
+        Interpreter* inter = new Interpreter();
+        root->accept(inter);
+=======
+
+    Interpreter* inter = new Interpreter();
 	root->accept(inter);
-	return yyparse();
+>>>>>>> bebf559e90410766f6bb21d7e75d596c2f68d9bb
 }
 

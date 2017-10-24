@@ -1,6 +1,6 @@
 declblock{
     int a,b,e[80];
-    int d[100];
+    int d,f;
 }
 codeblock{
     c = a + b;
