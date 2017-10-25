@@ -591,6 +591,10 @@ public:
     {
         this->term = term;
     }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
+    }
 };
 class ASTExpParan:public ASTExp{
 public:
@@ -598,6 +602,10 @@ public:
     ASTExpParan(ASTExp *exp)
     {
         this->exp = exp;
+    }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
     }
 };
 class ASTExpOps:public ASTExp{
@@ -611,20 +619,23 @@ public:
         this->op_type = op_type;
         this->right_exp = right_exp;
     }
-// public:
-    // void accept(Visitor *);
+    void accept(Visitor *v)
+    {
+        v->visit(this);
+    }
 };
 
 
 // Term
 class ASTTerm:public ASTExp{
 public:
-    union{
         ASTTermNum* NumTerm;
         ASTTermId* IdTerm;
-    };
-// public:
-    // virtual void accept(Visitor *);
+    ASTTerm()
+    {
+        this->NumTerm=NULL;
+        this->IdTerm=NULL;
+    }
 };
 class ASTTermNum : public ASTTerm{
 public:
@@ -633,8 +644,6 @@ public:
     {
         this->num = num;
     }
-// public:
-    // void accept(Visitor *);
 };
 class ASTTermId : public ASTTerm{
 public:
@@ -643,8 +652,6 @@ public:
     {
         this->id = id;
     }
-// public:
-    // void accept(Visitor *);
 };
 
 
@@ -655,8 +662,6 @@ public:
         ASTMultiVariable *MulVar;
         ASTIdVariable *IdVar;
     };
-// public:
-    // virtual void accept(Visitor *);
 };
 class ASTMultiVariable:public ASTVariable{
 public:
@@ -667,8 +672,6 @@ public:
         this->var1 = var1;
         this->var2 = var2;
     }
-// public:
-    // void accept(Visitor *);
 };
 class ASTIdVariable:public ASTVariable{
 public:
@@ -677,8 +680,6 @@ public:
     {
         this->id_var = id_var;
     }
-// public:
-    // void accept(Visitor *);
 };
 
 
@@ -700,7 +701,6 @@ public:
                 break;
         }
         this->id = newid;
-        // this->id=id;
         this->num_index=-1;
         this->id_index="\0";
     }
