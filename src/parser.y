@@ -107,7 +107,7 @@ declblock 				: DECL_BLOCK '{' decl_statement '}'	codeblock		{$$ = new ASTDeclBl
 						;
 codeblock 				: CODE_BLOCK '{' code_statement '}'					{$$ = new ASTCodeBlockNode($3);}
 						;
-decl_statement 			: DATATYPE decl_params ';'							{ASTParamsDeclStmt* declstmt = new ASTParamsDeclStmt($2); $$ = new ASTDeclStmt(); $$->ParamsDeclStmt = declstmt; cout<<$$->ParamsDeclStmt<<"reduction "<<endl;}
+decl_statement 			: DATATYPE decl_params ';'							{ASTParamsDeclStmt* declstmt = new ASTParamsDeclStmt($2); $$ = new ASTDeclStmt(); $$->ParamsDeclStmt = declstmt; }
 						| decl_statement decl_statement						{ASTMultiDeclStmt* declstmt = new ASTMultiDeclStmt($1, $2); $$ = new ASTDeclStmt(); $$->MultiDeclStmt = declstmt; cout<<"reduction not happef"<<endl;}
 						| ';'												{;}
 						;
@@ -251,13 +251,8 @@ void yyerror (char *s) { fprintf(stderr, "%s\n",s);}
 int main(void){
 	/* init symbol table*/
 	yyparse();
-<<<<<<< HEAD
-        Interpreter* inter = new Interpreter();
-        root->accept(inter);
-=======
 
     Interpreter* inter = new Interpreter();
 	root->accept(inter);
->>>>>>> bebf559e90410766f6bb21d7e75d596c2f68d9bb
 }
 

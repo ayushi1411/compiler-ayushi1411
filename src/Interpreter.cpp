@@ -15,6 +15,17 @@ public:
     void visit (class ASTDeclParams*);
     void visit (class ASTDeclMultiParams*);
     void visit (class ASTDeclIdParams*);
+    void visit (class ASTCodeBlockNode*);
+    void visit (class ASTCodeStmt*);
+    void visit (class ASTCodePrint*);
+    void visit (class ASTPrintStmt*);
+    void visit(class ASTFinalPrintStmt*);
+    void visit(class ASTMultiPrintStmt*);
+    void visit(class ASTFinPrintStmt*);
+    void visit(class ASTFinalPrintStmtId*);
+    void visit(class ASTFinalPrintStmtText*);
+    void visit(class ASTIdNode*);
+    bool checkIdExist(string id);
 };
 
 void Interpreter::visit(ASTNode* astNode)
@@ -28,12 +39,142 @@ void Interpreter::visit(ASTDeclBlockNode* astDeclBlockNode)
 {
     // class ASTParamsDeclStmt* astParamDeclStmt = dynamic_cast<ASTParamsDeclStmt*> (astDeclBlockNode->decl_stmt);
     // if (astParamDeclStmt!=NULL)
-    //     cout<<"not null "<<endl;
+    //     cout<<"not null "<<endl; 
     // class ASTMultiDeclStmt* astMultiDeclStmt = dynamic_cast<ASTMultiDeclStmt*> (astDeclBlockNode->decl_stmt);
     // if (astMultiDeclStmt!=NULL)
     // cout<<"atl eat this not null"<<endl;
     astDeclBlockNode->decl_stmt->accept(this);
+    astDeclBlockNode->code_block->accept(this);
 };
+
+void Interpreter::visit(ASTCodeBlockNode* astCodeBlockNode)
+{
+    cout<<"entered code block "<<endl;
+    astCodeBlockNode->code_stmt->accept(this);
+    return;
+}
+
+void Interpreter::visit(ASTCodeStmt* astCodeStmt)
+{
+    cout<<"executing code statement"<<endl;
+    if(astCodeStmt->CodePrint!=NULL)
+        astCodeStmt->CodePrint->accept(this);
+    return;
+}
+
+void Interpreter::visit(ASTCodePrint* astCodePrint)
+{
+    // astCodePrint->stmt->accept(this);
+    cout<<"print code"<<endl;
+    astCodePrint->stmt->accept(this);
+    if(astCodePrint->newline==true)
+        cout<<"\n";
+}
+
+void Interpreter::visit(ASTPrintStmt* astPrintStmt)
+{
+    cout<<"print statement"<<endl;
+    if(astPrintStmt->MulPrintStmt!=NULL)
+    {
+        astPrintStmt->MulPrintStmt->accept(this);
+    }
+    if(astPrintStmt->FinPrintStmt!=NULL)
+    {
+        astPrintStmt->FinPrintStmt->accept(this);
+    }
+}
+
+void Interpreter::visit(ASTMultiPrintStmt* astMultiPrintStmt)
+{
+    astMultiPrintStmt->stmt1->accept(this);
+    astMultiPrintStmt->stmt2->accept(this);
+}
+
+void Interpreter::visit(ASTFinPrintStmt* astFinPrintStmt)
+{
+    astFinPrintStmt->stmt->accept(this);
+}
+
+void Interpreter::visit(ASTFinalPrintStmt* astFinalPrintStmt)
+{
+    if(astFinalPrintStmt->FinalPrintStmtId!=NULL)
+        astFinalPrintStmt->FinalPrintStmtId->accept(this);
+    if(astFinalPrintStmt->FinalPrintStmtText!=NULL)
+        astFinalPrintStmt->FinalPrintStmtText->accept(this);
+}
+
+void Interpreter::visit(ASTFinalPrintStmtId* astFinalPrintStmtId)
+{
+    cout<<"printing id "<<endl;
+    astFinalPrintStmtId->id->accept(this);
+    return;
+}
+
+bool Interpreter::checkIdExist(string id)
+{
+    if (symbol_table.find(make_pair(id,-1))!=symbol_table.end() && symbol_table.find(make_pair(id,0))!=symbol_table.end())
+    {
+        return false;
+    }
+    return true;
+        
+}
+void Interpreter::visit(ASTIdNode* astIdNode)
+{
+    cout<<"decoding the identifier"<<endl;
+    bool existId = this->checkIdExist(astIdNode->id);
+    if(existId==false)
+    {
+        cout<<"Identifier not declared"<<endl;
+        exit(0);
+    }
+    if (astIdNode->num_index==-1 && astIdNode->id_index=="\0") // not an array 
+    {
+        cout<<symbol_table[make_pair(astIdNode->id, -1)];
+        return;
+    }
+    if(astIdNode->num_index!=-1)
+    {
+        if(symbol_table.find(make_pair(astIdNode->id,astIdNode->num_index))!=symbol_table.end())
+        {
+            cout<<symbol_table[make_pair(astIdNode->id, astIdNode->num_index)];
+        }
+        else
+        {
+            cout<<"array limit out of bounds "<<endl;
+            exit(0);
+        }
+    }
+    if(astIdNode->id_index!="\0")
+    {
+        if(symbol_table.find(make_pair(astIdNode->id_index,-1))!=symbol_table.end() && symbol_table.find(make_pair(astIdNode->id_index,0))==symbol_table.end() )
+        {
+            int index = symbol_table[make_pair(astIdNode->id_index,-1)];
+            if(symbol_table.find(make_pair(astIdNode->id, index))!=symbol_table.end())
+            {
+                cout<<symbol_table[make_pair(astIdNode->id, index)];
+            }
+            else
+            {
+                cout<<"array limit out of bounds"<<endl;
+            }
+
+        }
+        else{
+            cout<<"array index needs to be an integer"<<endl;
+            exit(0);
+        }
+    }
+
+
+}
+
+void Interpreter::visit(ASTFinalPrintStmtText* astFinalPrintStmtText)
+{
+    string text = astFinalPrintStmtText->text.substr(1,astFinalPrintStmtText->text.length()-2);
+    cout<<text;
+    return;
+}
 
 void Interpreter::visit(ASTDeclStmt* astDeclStmt)
 {
