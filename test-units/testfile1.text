@@ -1,11 +1,12 @@
 declblock{
-    int a,b,e[80];
+    int a,c,b,e[80];
     int d,f;
 }
 codeblock{
     print "hi there";
     d=8;
     b=10;
+    c=(b);
     a=b+d;
-    println "hello  ", a, " " ,b, " " ,c,d[100];
+    println "hello  ", a, " " ,b, " " ,c," ";
 }

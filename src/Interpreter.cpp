@@ -81,12 +81,15 @@ void Interpreter::visit(ASTCodeAssignment* astCodeAssignment)
 void Interpreter::visit(ASTMultiCodeAssignment* astMultiCodeAssignment)
 {
     cout<<"multi code assignment"<<endl;
+    astMultiCodeAssignment->stmt->accept(this);
     astMultiCodeAssignment->assign->accept(this);
 }
 void Interpreter::visit(ASTAssignment* astAssignment)
 {
     string id = astAssignment->id->id;
     int index;
+    cout<<"variable for assigment :: "<<id<<endl;
+
     if(symbol_table.find(make_pair(id,-1)) == symbol_table.end() && symbol_table.find(make_pair(id,0)) == symbol_table.end())
     {
         cout<<"variable not declared"<<endl;
@@ -118,6 +121,7 @@ void Interpreter::visit(ASTAssignment* astAssignment)
             cout<<"array index not declared or array index is an array variable"<<endl;
         }
     }
+    cout<<"variable passed existence test :: "<<id<<endl;
     // astAssignemt->exp->accept(this);
     int result = evaluateExp(astAssignment->exp);
     if(astAssignment->id->num_index==-1 && astAssignment->id->id_index=="\0")
@@ -134,9 +138,109 @@ void Interpreter::visit(ASTAssignment* astAssignment)
     cout<<id<<" assigned value "<<result<<endl;
 }
 
-int Interpreter::evaluateExp(ASTExp* exp)
+int Interpreter::evaluateExp(ASTExp* astExp)
 {
-    return 10;
+    cout<<"expression evaluation"<<endl;
+    if(astExp->ExpTerm!=NULL)
+    {
+        cout<<"evaluation exp term"<<endl;  
+        ASTTerm *term = astExp->ExpTerm->term;
+        if(term->NumTerm!=NULL)
+        {
+            return term->NumTerm->num;
+        }
+        else if(term->IdTerm!=NULL)
+        {
+            ASTIdNode* idNode = term->IdTerm->id;
+            string id = idNode->id;
+            int index;
+            if(symbol_table.find(make_pair(id,-1)) == symbol_table.end() && symbol_table.find(make_pair(id,0)) == symbol_table.end())
+            {
+                cout<<"variable not declared"<<endl;
+                exit(0);
+            }
+            if(idNode->num_index==-1 && idNode->id_index=="\0")
+            {
+                return symbol_table[make_pair(id, -1)];
+            }
+            if(idNode->num_index!=-1)
+            {
+                if(symbol_table.find(make_pair(id, idNode->num_index))!=symbol_table.end())
+                {
+                    cout<<"id:: "<<id<<" value:: "<<symbol_table[make_pair(id, idNode->num_index)]<<endl;
+                    return symbol_table[make_pair(id, idNode->num_index)];
+                }
+                else
+                {
+                    cout<<"array index out of bounds"<<endl;
+                    exit(0);
+                }
+            }
+            if(idNode->id_index!="\0")
+            {
+                if(symbol_table.find(make_pair(idNode->id_index,-1))!=symbol_table.end() && symbol_table.find(make_pair(idNode->id_index,0))==symbol_table.end() )
+                {
+                    index = symbol_table[make_pair(idNode->id_index,-1)];
+                    if(symbol_table.find(make_pair(id,index))==symbol_table.end())
+                    {
+                        cout<<"array index out of bounds"<<endl;
+                        exit(0);
+                    }
+                    else{
+                        return symbol_table[make_pair(id,index)];
+                    }
+                }
+                else{
+                    cout<<"array index not declared or array index is an array variable"<<endl;
+                }
+            }
+            
+        }
+    }
+    else if(astExp->ExpParan!=NULL)
+    {
+        cout<<"evaluating exp paran"<<endl;
+        return evaluateExp(astExp->ExpParan->exp);
+    }
+    else if(astExp->ExpOps!=NULL)
+    {
+        cout<<"evaluating exp ops"<<endl;
+        int exp1 = evaluateExp(astExp->ExpOps->left_exp);
+        int exp2 = evaluateExp(astExp->ExpOps->right_exp);
+        cout<<"exp1 = "<<exp1<<endl;
+        cout<<"exp2 = "<<exp2<<endl;
+        string op_type = astExp->ExpOps->op_type;
+        if(op_type=="+")
+            return exp1+exp2;
+        else if(op_type=="-")
+            return exp1-exp2;
+        else if(op_type=="*")
+            return exp1*exp2;
+        else if(op_type=="/")
+            return exp1/exp2;
+        else if(op_type=="%")
+            return exp1%exp2;
+        else if(op_type==">>")
+            return exp1>>exp2;
+        else if(op_type=="<<")
+            return exp1<<exp2;
+        else if(op_type=="<")
+            return exp1<exp2;
+        else if(op_type==">")
+            return exp1>exp2;
+        else if(op_type=="<=")
+            return exp1<=exp2;
+        else if(op_type==">=")
+            return exp1>=exp2;
+        else if(op_type=="==")
+            return exp1==exp2;
+        else if(op_type=="!=")
+            return exp1!=exp2;
+        else if(op_type=="&&")
+            return exp1 && exp2;
+        else if(op_type=="||")
+            return exp1||exp2;
+    }
 }
 
 void Interpreter::visit(ASTCodePrint* astCodePrint)

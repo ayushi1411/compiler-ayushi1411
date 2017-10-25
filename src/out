@@ -1,4 +1,5 @@
 ainstace created
+cinstace created
 binstace created
 array num accessed
 dinstace created
@@ -8,15 +9,17 @@ dinstace created
 term created8
 binstace created
 term created10
+cinstace created
+binstace created
+term id created0x215e830 0x215e830
 ainstace created
 binstace created
-term id created0xbeb5b0 0xbeb5b0
+term id created0x215f0c0 0x215f0c0
 dinstace created
-term id created0xbeb9a0 0xbeb9a0
+term id created0x215f4d0 0x215f4d0
 ainstace created
 binstace created
 cinstace created
-array num accessed
 visiting accept of declblock 
 visiting herer
 visiting here
@@ -28,11 +31,21 @@ a -1
 0
 visiting astdeclmultiparams
 visiring Declidparams
+c -1 
+created variable :: c
+a -1
+0
+c -1
+0
+visiting astdeclmultiparams
+visiring Declidparams
 b -1 
 created variable :: b
 a -1
 0
 b -1
+0
+c -1
 0
 visiring Declidparams
 e 80 
@@ -119,6 +132,8 @@ created variable :: e
 a -1
 0
 b -1
+0
+c -1
 0
 e 0
 0
@@ -289,6 +304,8 @@ a -1
 0
 b -1
 0
+c -1
+0
 d -1
 0
 e 0
@@ -457,6 +474,8 @@ created variable :: f
 a -1
 0
 b -1
+0
+c -1
 0
 d -1
 0
@@ -627,8 +646,47 @@ executing code statement
 print multi code
 executing code statement
 multi code assignment
+executing code statement
+multi code assignment
+executing code statement
+multi code assignment
+executing code statement
+multi code assignment
+executing code statement
+print code
+print statement
+hi therecalling assignment visit
+variable for assigment :: d
+variable passed existence test :: d
+expression evaluation
+evaluation exp term
+d assigned value 8
 calling assignment visit
-a assigned value 10
+variable for assigment :: b
+variable passed existence test :: b
+expression evaluation
+evaluation exp term
+b assigned value 10
+calling assignment visit
+variable for assigment :: c
+variable passed existence test :: c
+expression evaluation
+evaluating exp paran
+expression evaluation
+evaluation exp term
+c assigned value 10
+calling assignment visit
+variable for assigment :: a
+variable passed existence test :: a
+expression evaluation
+evaluating exp ops
+expression evaluation
+evaluation exp term
+expression evaluation
+evaluation exp term
+exp1 = 10
+exp2 = 8
+a assigned value 18
 print statement
 print statement
 print statement
@@ -638,10 +696,8 @@ print statement
 print statement
 hello  printing id 
 decoding the identifier
+18 printing id 
+decoding the identifier
 10 printing id 
 decoding the identifier
-0 printing id 
-decoding the identifier
-0printing id 
-decoding the identifier
-array limit out of bounds 
+10 
