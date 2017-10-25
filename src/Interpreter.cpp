@@ -29,6 +29,8 @@ public:
     void visit(class ASTCodeAssignment*);
     void visit(class ASTAssignment*);
     void visit(class ASTMultiCodeAssignment*);
+    void visit(class ASTCodeRead*);
+    void visit(class ASTMultiCodeRead*);
     int evaluateExp(class ASTExp*);
     bool checkIdExist(string id);
 };
@@ -70,7 +72,116 @@ void Interpreter::visit(ASTCodeStmt* astCodeStmt)
         astCodeStmt->CodeAssignment->accept(this);
     if(astCodeStmt->MultiCodeAssignment!=NULL)
         astCodeStmt->MultiCodeAssignment->accept(this);
+    if(astCodeStmt->CodeRead!=NULL)
+        astCodeStmt->CodeRead->accept(this);
+    if(astCodeStmt->MultiCodeRead!=NULL)
+        astCodeStmt->MultiCodeRead->accept(this);
     return;
+}
+
+void Interpreter::visit(ASTCodeRead* astCodeRead)
+{
+    int index;
+    if(symbol_table.find(make_pair(astCodeRead->id->id,-1)) == symbol_table.end() && symbol_table.find(make_pair(astCodeRead->id->id,0)) == symbol_table.end())
+    {
+        cout<<"variable not declared"<<endl;
+        exit(0);
+    }
+    if(symbol_table.find(make_pair(astCodeRead->id->id,-1)) != symbol_table.end())
+    {
+        int v;
+        cin>>v;
+        symbol_table[make_pair(astCodeRead->id->id,-1)]=v;
+    }
+    if(astCodeRead->id->num_index!=-1)
+    {
+        if(symbol_table.find(make_pair(astCodeRead->id->id, astCodeRead->id->num_index))!=symbol_table.end())
+        {
+            int v;
+            cin>>v;
+            symbol_table[make_pair(astCodeRead->id->id,astCodeRead->id->num_index)]=v;
+        }
+        else
+        {
+            cout<<"array index out of bounds"<<endl;
+            exit(0);
+        }
+    }
+    if(astCodeRead->id->id_index!="\0")
+    {
+        if(symbol_table.find(make_pair(astCodeRead->id->id_index,-1))!=symbol_table.end() && symbol_table.find(make_pair(astCodeRead->id->id_index,0))==symbol_table.end() )
+        {
+            index = symbol_table[make_pair(astCodeRead->id->id_index,-1)];
+            if(symbol_table.find(make_pair(astCodeRead->id->id,index))==symbol_table.end())
+            {
+                cout<<"array index out of bounds"<<endl;
+                exit(0);
+            }
+            else
+            {
+                int v;
+                cin>>v;
+                symbol_table[make_pair(astCodeRead->id->id,index)]=v;
+            }
+        }
+        else{
+            cout<<"array index not declared or array index is an array variable"<<endl;
+        }
+    }
+}
+
+void Interpreter::visit(ASTMultiCodeRead* astMultiCodeRead)
+{
+    astMultiCodeRead->stmt->accept(this);
+    int index;
+    if(symbol_table.find(make_pair(astMultiCodeRead->id->id,-1)) == symbol_table.end() && symbol_table.find(make_pair(astMultiCodeRead->id->id,0)) == symbol_table.end())
+    {
+        cout<<"variable not declared"<<endl;
+        exit(0);
+    }
+    if(symbol_table.find(make_pair(astMultiCodeRead->id->id,-1)) != symbol_table.end())
+    {
+        int v;
+        cout<<"enter the value:: "<<endl;
+        cin>>v;
+        cout<<"read the variable"<<endl;
+        symbol_table[make_pair(astMultiCodeRead->id->id,-1)]=v;
+    }
+    if(astMultiCodeRead->id->num_index!=-1)
+    {
+        if(symbol_table.find(make_pair(astMultiCodeRead->id->id, astMultiCodeRead->id->num_index))!=symbol_table.end())
+        {
+            int v;
+            cin>>v;
+            symbol_table[make_pair(astMultiCodeRead->id->id,astMultiCodeRead->id->num_index)]=v;
+        }
+        else
+        {
+            cout<<"array index out of bounds"<<endl;
+            exit(0);
+        }
+    }
+    if(astMultiCodeRead->id->id_index!="\0")
+    {
+        if(symbol_table.find(make_pair(astMultiCodeRead->id->id_index,-1))!=symbol_table.end() && symbol_table.find(make_pair(astMultiCodeRead->id->id_index,0))==symbol_table.end() )
+        {
+            index = symbol_table[make_pair(astMultiCodeRead->id->id_index,-1)];
+            if(symbol_table.find(make_pair(astMultiCodeRead->id->id,index))==symbol_table.end())
+            {
+                cout<<"array index out of bounds"<<endl;
+                exit(0);
+            }
+            else
+            {
+                int v;
+                cin>>v;
+                symbol_table[make_pair(astMultiCodeRead->id->id,index)]=v;
+            }
+        }
+        else{
+            cout<<"array index not declared or array index is an array variable"<<endl;
+        }
+    }
 }
 
 void Interpreter::visit(ASTCodeAssignment* astCodeAssignment)

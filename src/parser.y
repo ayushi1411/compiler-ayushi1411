@@ -6,6 +6,7 @@
 
 #include "Interpreter.cpp"
 using namespace std;
+extern "C" FILE* yyin;
 void yyerror(char *s);  //C declarations used in actions
 int yylex(void);
 int symbols[52];
@@ -248,8 +249,11 @@ char* print_text(char* str)
 }
 void yyerror (char *s) { fprintf(stderr, "%s\n",s);}
 
-int main(void){
+int main(int argc,char* argv[]){
 	/* init symbol table*/
+	cout<<"reading the file"<<endl;
+	yyin = fopen(argv[1],"r");
+	cout<<"file read"<<endl;
 	yyparse();
 
     Interpreter* inter = new Interpreter();

@@ -87,6 +87,9 @@ class Visitor
     virtual void visit(class ASTCodeAssignment*)=0;
     virtual void visit(class ASTAssignment*)=0;
     virtual void visit(class ASTMultiCodeAssignment*)=0;
+    virtual void visit(class ASTCodeRead*)=0;
+    virtual void visit(class ASTMultiCodeRead*)=0;
+    
     
 };
 
@@ -268,6 +271,10 @@ public:
     {
         this->id = id;
     }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
+    }
 };
 class ASTCodeIfElse:public ASTCodeStmt{
 public:
@@ -343,6 +350,10 @@ public:
     {
         this->stmt = stmt;
         this->id = id;
+    }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
     }
 };
 class ASTMultiCodeIfElse:public ASTCodeStmt{
