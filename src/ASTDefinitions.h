@@ -83,6 +83,11 @@ class Visitor
     virtual void visit(class ASTFinalPrintStmtId*)=0;
     virtual void visit(class ASTFinalPrintStmtText*)=0;
     virtual void visit(class ASTIdNode*)=0;
+    virtual void visit(class ASTMultiCodePrint*)=0;
+    virtual void visit(class ASTCodeAssignment*)=0;
+    virtual void visit(class ASTAssignment*)=0;
+    virtual void visit(class ASTMultiCodeAssignment*)=0;
+    
 };
 
 
@@ -223,6 +228,10 @@ public:
     {
         this->assign = assign;
     }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
+    }
 };
 class ASTMultiCodeAssignment: public ASTCodeStmt{
 public:
@@ -232,6 +241,10 @@ public:
     {
         this->stmt = stmt;
         this->assign = assign;
+    }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
     }
 };
 class ASTCodePrint:public ASTCodeStmt{
@@ -316,6 +329,10 @@ public:
         this->stmt1 = stmt1;
         this->stmt2 = stmt2;
         this->newline = newline;
+    }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
     }
 };
 class ASTMultiCodeRead:public ASTCodeStmt{
@@ -556,8 +573,16 @@ public:
         ASTExpTerm* ExpTerm;
         ASTExpParan* ExpParan;
         ASTExpOps* ExpOps;
-// public:
-    // virtual void accept(Visitor *);
+        ASTExp()
+        {
+            this->ExpTerm=NULL;
+            this->ExpParan=NULL;
+            this->ExpOps=NULL;
+        }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
+    }
 };
 class ASTExpTerm:public ASTExp{
 public:
@@ -566,8 +591,6 @@ public:
     {
         this->term = term;
     }
-// public:
-    // void accept(Visitor *);
 };
 class ASTExpParan:public ASTExp{
 public:
@@ -576,8 +599,6 @@ public:
     {
         this->exp = exp;
     }
-// public:
-    // void accept(Visitor *);
 };
 class ASTExpOps:public ASTExp{
 public:
@@ -769,6 +790,11 @@ public:
     {
         this->id = id;
         this->exp = exp;
+    }
+    void accept(Visitor *v)
+    {
+        cout<<"calling assignment visit"<<endl;
+        v->visit(this);
     }
 };
 

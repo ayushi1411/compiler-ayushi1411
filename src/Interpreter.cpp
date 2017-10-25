@@ -25,6 +25,11 @@ public:
     void visit(class ASTFinalPrintStmtId*);
     void visit(class ASTFinalPrintStmtText*);
     void visit(class ASTIdNode*);
+    void visit(class ASTMultiCodePrint*);
+    void visit(class ASTCodeAssignment*);
+    void visit(class ASTAssignment*);
+    void visit(class ASTMultiCodeAssignment*);
+    int evaluateExp(class ASTExp*);
     bool checkIdExist(string id);
 };
 
@@ -59,7 +64,79 @@ void Interpreter::visit(ASTCodeStmt* astCodeStmt)
     cout<<"executing code statement"<<endl;
     if(astCodeStmt->CodePrint!=NULL)
         astCodeStmt->CodePrint->accept(this);
+    if(astCodeStmt->MultiCodePrint!=NULL)
+        astCodeStmt->MultiCodePrint->accept(this);
+    if(astCodeStmt->CodeAssignment!=NULL)
+        astCodeStmt->CodeAssignment->accept(this);
+    if(astCodeStmt->MultiCodeAssignment!=NULL)
+        astCodeStmt->MultiCodeAssignment->accept(this);
     return;
+}
+
+void Interpreter::visit(ASTCodeAssignment* astCodeAssignment)
+{
+    cout<<"code assignment"<<endl;
+    astCodeAssignment->assign->accept(this);
+}
+void Interpreter::visit(ASTMultiCodeAssignment* astMultiCodeAssignment)
+{
+    cout<<"multi code assignment"<<endl;
+    astMultiCodeAssignment->assign->accept(this);
+}
+void Interpreter::visit(ASTAssignment* astAssignment)
+{
+    string id = astAssignment->id->id;
+    int index;
+    if(symbol_table.find(make_pair(id,-1)) == symbol_table.end() && symbol_table.find(make_pair(id,0)) == symbol_table.end())
+    {
+        cout<<"variable not declared"<<endl;
+        exit(0);
+    }
+    if(astAssignment->id->num_index!=-1)
+    {
+        if(symbol_table.find(make_pair(id, astAssignment->id->num_index))!=symbol_table.end())
+        {
+        }
+        else
+        {
+            cout<<"array index out of bounds"<<endl;
+            exit(0);
+        }
+    }
+    if(astAssignment->id->id_index!="\0")
+    {
+        if(symbol_table.find(make_pair(astAssignment->id->id_index,-1))!=symbol_table.end() && symbol_table.find(make_pair(astAssignment->id->id_index,0))==symbol_table.end() )
+        {
+            index = symbol_table[make_pair(astAssignment->id->id_index,-1)];
+            if(symbol_table.find(make_pair(id,index))==symbol_table.end())
+            {
+                cout<<"array index out of bounds"<<endl;
+                exit(0);
+            }
+        }
+        else{
+            cout<<"array index not declared or array index is an array variable"<<endl;
+        }
+    }
+    // astAssignemt->exp->accept(this);
+    int result = evaluateExp(astAssignment->exp);
+    if(astAssignment->id->num_index==-1 && astAssignment->id->id_index=="\0")
+    {
+        symbol_table[make_pair(id, -1)]=result;
+    }
+    else if(astAssignment->id->num_index!=-1)
+    {
+        symbol_table[make_pair(id,astAssignment->id->num_index)]=result;
+    }
+    else{
+        symbol_table[make_pair(id, index)]=result;
+    }
+    cout<<id<<" assigned value "<<result<<endl;
+}
+
+int Interpreter::evaluateExp(ASTExp* exp)
+{
+    return 10;
 }
 
 void Interpreter::visit(ASTCodePrint* astCodePrint)
@@ -68,6 +145,15 @@ void Interpreter::visit(ASTCodePrint* astCodePrint)
     cout<<"print code"<<endl;
     astCodePrint->stmt->accept(this);
     if(astCodePrint->newline==true)
+        cout<<"\n";
+}
+
+void Interpreter::visit(ASTMultiCodePrint* astMultiCodePrint)
+{
+    cout<<"print multi code"<<endl;
+    astMultiCodePrint->stmt1->accept(this);
+    astMultiCodePrint->stmt2->accept(this);
+    if(astMultiCodePrint->newline==true)
         cout<<"\n";
 }
 
@@ -161,7 +247,7 @@ void Interpreter::visit(ASTIdNode* astIdNode)
 
         }
         else{
-            cout<<"array index needs to be an integer"<<endl;
+            cout<<"array index not declared or array index is an array variable"<<endl;
             exit(0);
         }
     }
