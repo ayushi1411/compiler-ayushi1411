@@ -7,8 +7,7 @@ codeblock{
 	for i = 1, 100 {
 		data[i] = i ;
 	}
-	
-
+	data[0] = 1;
 	sum = 0;
 	for i = 1, 100 {
 		sum = sum + data[i];

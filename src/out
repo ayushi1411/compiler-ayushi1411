@@ -7,16 +7,23 @@ finstace created
 reduction not happef
 dinstace created
 term created8
+assignmen seed d
 binstace created
 term created10
+assignmen seed b
+array num accessed
+term created10
+assignmen seed e
 cinstace created
 binstace created
-term id created0x215e830 0x215e830
+term id created0x2474e40 0x2474e40
+assignmen seed c
 ainstace created
 binstace created
-term id created0x215f0c0 0x215f0c0
+term id created0x24756d0 0x24756d0
 dinstace created
-term id created0x215f4d0 0x215f4d0
+term id created0x2475ae0 0x2475ae0
+assignmen seed a
 ainstace created
 binstace created
 cinstace created
@@ -653,6 +660,8 @@ multi code assignment
 executing code statement
 multi code assignment
 executing code statement
+multi code assignment
+executing code statement
 print code
 print statement
 hi therecalling assignment visit
@@ -667,6 +676,12 @@ variable passed existence test :: b
 expression evaluation
 evaluation exp term
 b assigned value 10
+calling assignment visit
+variable for assigment :: e
+variable passed existence test :: e
+expression evaluation
+evaluation exp term
+e assigned value 10
 calling assignment visit
 variable for assigment :: c
 variable passed existence test :: c

@@ -6,6 +6,7 @@ codeblock{
     print "hi there";
     d=8;
     b=10;
+    e[0]=10;
     c=(b);
     a=b+d;
     println "hello  ", a, " " ,b, " " ,c," ";
