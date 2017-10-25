@@ -73,6 +73,16 @@ class Visitor
     virtual void visit (class ASTDeclParams*)=0;
     virtual void visit(class ASTDeclMultiParams*)=0;
     virtual void visit(class ASTDeclIdParams*)=0;
+    virtual void visit(class ASTCodeBlockNode*)=0;
+    virtual void visit(class ASTCodeStmt*)=0;
+    virtual void visit(class ASTCodePrint*)=0;
+    virtual void visit(class ASTPrintStmt*)=0;
+    virtual void visit(class ASTFinalPrintStmt*)=0;
+    virtual void visit(class ASTMultiPrintStmt*)=0;
+    virtual void visit(class ASTFinPrintStmt*)=0;
+    virtual void visit(class ASTFinalPrintStmtId*)=0;
+    virtual void visit(class ASTFinalPrintStmtText*)=0;
+    virtual void visit(class ASTIdNode*)=0;
 };
 
 
@@ -151,6 +161,10 @@ class ASTCodeBlockNode{
         {
             this->code_stmt = code_stmt;
         }
+        void accept(Visitor *v)
+        {
+            v->visit(this);
+        }
     // public:
         // void accept(Visitor *);
 };
@@ -158,7 +172,6 @@ class ASTCodeBlockNode{
 //code statements
 class ASTCodeStmt{
 public:
-    union{
         ASTCodeAssignment* CodeAssignment;
         ASTMultiCodeAssignment* MultiCodeAssignment;
         ASTCodePrint* CodePrint;
@@ -177,7 +190,31 @@ public:
         ASTMultiCodeWhile* MultiCodeWhile;
         ASTMultiCodeGoto* MultiCodeGoto;
         ASTMultiCodeLabel* MultiCodeLabel; 
-    };
+        ASTCodeStmt()
+        {
+            this->CodeAssignment=NULL;
+            this->MultiCodeAssignment=NULL;
+            this->CodePrint=NULL;
+            this->CodeRead=NULL;
+            this->CodeIfElse=NULL;
+            this->CodeIfStmt=NULL;
+            this->CodeFor=NULL;
+            this->CodeWhile=NULL;
+            this->CodeGoto=NULL;
+            this->CodeLabel=NULL;
+            this->MultiCodePrint=NULL;
+            this->MultiCodeRead=NULL;
+            this->MultiCodeIfElse=NULL;
+            this->MultiCodeIfStmt=NULL;
+            this->MultiCodeFor=NULL;
+            this->MultiCodeWhile=NULL;
+            this->MultiCodeGoto=NULL;
+            this->MultiCodeLabel=NULL; 
+        }
+        void accept(Visitor *v)
+        {
+            v->visit(this);
+        }
 };
 class ASTCodeAssignment:public ASTCodeStmt{
 public:
@@ -205,6 +242,10 @@ public:
     {
         this->stmt = stmt;
         this->newline = newline;
+    }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
     }
 };
 class ASTCodeRead:public ASTCodeStmt{
@@ -355,10 +396,12 @@ public:
 class ASTPrintStmt:public ASTCodeStmt{
 public:
     // bool newline;    
-    union{
         ASTMultiPrintStmt* MulPrintStmt;
         ASTFinPrintStmt* FinPrintStmt;  
-    };
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 
 };
 class ASTMultiPrintStmt:public ASTPrintStmt{
@@ -370,6 +413,10 @@ public:
         this->stmt1 = stmt1;
         this->stmt2 = stmt2;
     }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 class ASTFinPrintStmt: public ASTPrintStmt{
 public:
@@ -378,15 +425,27 @@ public:
     {
         this->stmt = stmt;
     }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 
 //final print statement
-class ASTFinalPrintStmt: public ASTPrintStmt{
-public:
-    union{    
-        ASTFinalPrintStmtId* FinalPrintStmtId;
-        ASTFinalPrintStmtText* FinalPrintStmtText;
-    };
+class ASTFinalPrintStmt{
+public:   
+    ASTFinalPrintStmtId* FinalPrintStmtId;
+    ASTFinalPrintStmtText* FinalPrintStmtText;
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
+    ASTFinalPrintStmt()
+    {
+        this->FinalPrintStmtId=NULL;
+        this->FinalPrintStmtText=NULL;
+    }
+
 };
 class ASTFinalPrintStmtId:public ASTFinalPrintStmt{
 public:
@@ -395,6 +454,10 @@ public:
     {
         this->id = id;
     }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 class ASTFinalPrintStmtText:public ASTFinalPrintStmt{
 public:
@@ -402,6 +465,10 @@ public:
     ASTFinalPrintStmtText(string text)
     {
         this->text = text;
+    }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
     }
 };
 
@@ -486,11 +553,9 @@ public:
 //Expression
 class ASTExp:public ASTCodeStmt{
 public:
-    union{
         ASTExpTerm* ExpTerm;
         ASTExpParan* ExpParan;
         ASTExpOps* ExpOps;
-    };
 // public:
     // virtual void accept(Visitor *);
 };
@@ -644,32 +709,12 @@ public:
         this->num_index=num_index1;
         this->id_index=id_index;
     }
+    void accept(Visitor * v)
+    {
+        v->visit(this);
+    }
     
 };
-// class ASTId:public ASTIdNode{
-// public:
-//     string id;
-//     ASTId(string id)
-//     {
-//         this->id = id ;
-//     };
-// // public:
-//     // void accept(Visitor *);
-// };
-// class ASTArrayIndexNum: public ASTIdNode{
-// public:
-//     string id;
-//     int index;
-// // public:
-//     // void accept(Visitor *);
-// };
-// class ASTArrayIndexId: public ASTIdNode{
-// public:
-//     string id;
-//     string index;
-// // public:
-//     // void accept(Visitor *);
-// };
 
 
 //declaration parameters
