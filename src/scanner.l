@@ -16,7 +16,7 @@
 "exit"			{return EXIT_COMMAND;}
 \"[^\"]*\"      {yylval.str = yytext; return TEXT;}
 [a-zA-Z][a-zA-Z0-9]* {yylval.id = yytext; return IDENTIFIER;}
-\[[1-9][0-9]*\] {yylval.size = yytext; return ARRAY_SIZE;}
+\[[0-9][0-9]*\] {yylval.size = yytext; return ARRAY_SIZE;}
 \[[A-Za-z]*\]   {yylval.index = yytext; return ARRAY_INDEX;}
 [0-9]+			{yylval.num = atoi(yytext); return NUMBER;}
 [ \t\n]			;
@@ -37,7 +37,7 @@
 "&&"              {return AND;}
 "||"              {return OR;}
 [;{},():]		{return yytext[0];}
-.			    {printf("the char is %c",yytext[0]);ECHO; }
+.			    {printf("the char is %c\n",yytext[0]);ECHO; }
 
 %%
 int yywrap (void) {return 1;}

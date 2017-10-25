@@ -155,7 +155,7 @@ for_exp					: IDENTIFIER EQUATE NUMBER ',' NUMBER				{$$ = new ASTForExp($1, $3,
 						;
 while_statement			: WHILELOOP exp '{' code_statement '}'				{$$ = new ASTWhileStmt($2,$4);}
 						;
-assignment				: identifiers EQUATE exp							{$$ = new ASTAssignment($1, $3); }
+assignment				: identifiers EQUATE exp							{$$ = new ASTAssignment($1, $3); cout<<"assignmen seed "<<$1->id<<endl;	  }
 						;
 exp						: term												{ASTExpTerm* expterm = new ASTExpTerm($1); $$ = new ASTExp(); $$->ExpTerm = expterm;}
 						| exp binop exp										{ASTExpOps* expops = new ASTExpOps($1, $2, $3); $$ = new ASTExp(); $$->ExpOps = expops;}

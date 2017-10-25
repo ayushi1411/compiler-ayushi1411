@@ -722,7 +722,10 @@ public:
         int num_index1 = stoi(num_index);
         
         if(id_index!="NULL")
-            id_index = id_index.substr(1,id_index.size()-1);
+        {
+            id_index = id_index.substr(1,id_index.size()-2);
+            cout<<"array id index is :: "<<id_index<<endl;
+        }
         else
             id_index="\0";
 

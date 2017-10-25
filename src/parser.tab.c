@@ -1639,7 +1639,7 @@ yyreduce:
 
   case 42:
 #line 158 "parser.y" /* yacc.c:1646  */
-    {(yyval.ASTAssignment) = new ASTAssignment((yyvsp[-2].ASTIdNode), (yyvsp[0].ASTExp)); }
+    {(yyval.ASTAssignment) = new ASTAssignment((yyvsp[-2].ASTIdNode), (yyvsp[0].ASTExp)); cout<<"assignmen seed "<<(yyvsp[-2].ASTIdNode)->id<<endl;	  }
 #line 1644 "parser.tab.c" /* yacc.c:1646  */
     break;
 
