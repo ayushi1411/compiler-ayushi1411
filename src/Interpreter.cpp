@@ -25,6 +25,7 @@ public:
     void visit(class ASTFinalPrintStmtId*);
     void visit(class ASTFinalPrintStmtText*);
     void visit(class ASTIdNode*);
+    void visit(class ASTMultiCodePrint*);
     bool checkIdExist(string id);
 };
 
@@ -59,6 +60,8 @@ void Interpreter::visit(ASTCodeStmt* astCodeStmt)
     cout<<"executing code statement"<<endl;
     if(astCodeStmt->CodePrint!=NULL)
         astCodeStmt->CodePrint->accept(this);
+    if(astCodeStmt->MultiCodePrint!=NULL)
+        astCodeStmt->MultiCodePrint->accept(this);
     return;
 }
 
@@ -68,6 +71,15 @@ void Interpreter::visit(ASTCodePrint* astCodePrint)
     cout<<"print code"<<endl;
     astCodePrint->stmt->accept(this);
     if(astCodePrint->newline==true)
+        cout<<"\n";
+}
+
+void Interpreter::visit(ASTMultiCodePrint* astMultiCodePrint)
+{
+    cout<<"print multi code"<<endl;
+    astMultiCodePrint->stmt1->accept(this);
+    astMultiCodePrint->stmt2->accept(this);
+    if(astMultiCodePrint->newline==true)
         cout<<"\n";
 }
 

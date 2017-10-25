@@ -615,8 +615,11 @@ f -1
 0
 entered code block 
 executing code statement
+print multi code
+executing code statement
 print code
 print statement
+hi thereprint statement
 print statement
 print statement
 print statement

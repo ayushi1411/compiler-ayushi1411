@@ -3,5 +3,6 @@ declblock{
     int d,f;
 }
 codeblock{
+    print "hi there";
     println "hello  ", a, " " ,b, " " ,c,d[100];
 }

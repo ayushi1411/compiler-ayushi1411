@@ -83,6 +83,7 @@ class Visitor
     virtual void visit(class ASTFinalPrintStmtId*)=0;
     virtual void visit(class ASTFinalPrintStmtText*)=0;
     virtual void visit(class ASTIdNode*)=0;
+    virtual void visit(class ASTMultiCodePrint*)=0;
 };
 
 
@@ -316,6 +317,10 @@ public:
         this->stmt1 = stmt1;
         this->stmt2 = stmt2;
         this->newline = newline;
+    }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
     }
 };
 class ASTMultiCodeRead:public ASTCodeStmt{
