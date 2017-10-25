@@ -1,3 +1,5 @@
+reading the file
+file read
 ainstace created
 cinstace created
 binstace created
@@ -11,18 +13,19 @@ assignmen seed d
 binstace created
 term created10
 assignmen seed b
+binstace created
 array num accessed
 term created10
 assignmen seed e
 cinstace created
 binstace created
-term id created0x2474e40 0x2474e40
+term id created0x1a082d0 0x1a082d0
 assignmen seed c
 ainstace created
 binstace created
-term id created0x24756d0 0x24756d0
+term id created0x1a08b60 0x1a08b60
 dinstace created
-term id created0x2475ae0 0x2475ae0
+term id created0x1a08f70 0x1a08f70
 assignmen seed a
 ainstace created
 binstace created
@@ -658,6 +661,7 @@ multi code assignment
 executing code statement
 multi code assignment
 executing code statement
+executing code statement
 multi code assignment
 executing code statement
 multi code assignment
@@ -676,6 +680,8 @@ variable passed existence test :: b
 expression evaluation
 evaluation exp term
 b assigned value 10
+enter the value:: 
+read the variable
 calling assignment visit
 variable for assigment :: e
 variable passed existence test :: e
@@ -689,7 +695,7 @@ expression evaluation
 evaluating exp paran
 expression evaluation
 evaluation exp term
-c assigned value 10
+c assigned value 5
 calling assignment visit
 variable for assigment :: a
 variable passed existence test :: a
@@ -699,9 +705,9 @@ expression evaluation
 evaluation exp term
 expression evaluation
 evaluation exp term
-exp1 = 10
+exp1 = 5
 exp2 = 8
-a assigned value 18
+a assigned value 13
 print statement
 print statement
 print statement
@@ -711,8 +717,8 @@ print statement
 print statement
 hello  printing id 
 decoding the identifier
-18 printing id 
+13 printing id 
 decoding the identifier
-10 printing id 
+5 printing id 
 decoding the identifier
-10 
+5 
