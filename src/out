@@ -4,6 +4,15 @@ array num accessed
 dinstace created
 finstace created
 reduction not happef
+dinstace created
+term created8
+binstace created
+term created10
+ainstace created
+binstace created
+term id created0xbeb5b0 0xbeb5b0
+dinstace created
+term id created0xbeb9a0 0xbeb9a0
 ainstace created
 binstace created
 cinstace created
@@ -617,9 +626,10 @@ entered code block
 executing code statement
 print multi code
 executing code statement
-print code
+multi code assignment
+calling assignment visit
+a assigned value 10
 print statement
-hi thereprint statement
 print statement
 print statement
 print statement
@@ -628,7 +638,7 @@ print statement
 print statement
 hello  printing id 
 decoding the identifier
-0 printing id 
+10 printing id 
 decoding the identifier
 0 printing id 
 decoding the identifier
