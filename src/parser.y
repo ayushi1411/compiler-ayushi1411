@@ -144,7 +144,7 @@ print_statement			: print_statement ',' final_print_statement 		{ASTMultiPrintSt
 final_print_statement	: identifiers 										{ASTFinalPrintStmtId* finalidprint = new ASTFinalPrintStmtId($1); $$ = new ASTFinalPrintStmt(); $$->FinalPrintStmtId = finalidprint;}
 						| TEXT												{ASTFinalPrintStmtText* textprint = new ASTFinalPrintStmtText($1); $$  = new ASTFinalPrintStmt(); $$->FinalPrintStmtText = textprint;}
 						;
-if_statement			: IF exp '{' code_statement '}'						{$$ = new ASTIfStmt($2, $4);}
+if_statement			: IF exp '{' code_statement '}'						{cout<<"going to construct if stmt\n";$$ = new ASTIfStmt($2, $4); cout<<"constructing if statement\n";}
 						;
 else_statement			: ELSE '{' code_statement '}'						{ASTElse* elsestmt = new ASTElse($3); $$ = new ASTElseStmt(); $$-> ElseStmt = elsestmt;}
 						| ELSE if_statement									{ASTElseIf* elseif = new ASTElseIf($2); $$ = new ASTElseStmt(); $$->ElseIf = elseif;}
@@ -156,10 +156,10 @@ for_exp					: IDENTIFIER EQUATE NUMBER ',' NUMBER				{$$ = new ASTForExp($1, $3,
 						;
 while_statement			: WHILELOOP exp '{' code_statement '}'				{$$ = new ASTWhileStmt($2,$4);}
 						;
-assignment				: identifiers EQUATE exp							{$$ = new ASTAssignment($1, $3); cout<<"assignmen seed "<<$1->id<<endl;	  }
+assignment				: identifiers EQUATE exp							{$$ = new ASTAssignment($1, $3); }
 						;
 exp						: term												{ASTExpTerm* expterm = new ASTExpTerm($1); $$ = new ASTExp(); $$->ExpTerm = expterm;}
-						| exp binop exp										{ASTExpOps* expops = new ASTExpOps($1, $2, $3); $$ = new ASTExp(); $$->ExpOps = expops;}
+						| exp binop exp										{cout<<"creating expression"<<endl; ASTExpOps* expops = new ASTExpOps($1, $2, $3); $$ = new ASTExp(); $$->ExpOps = expops; cout<<"expression created\n";}
 						| '(' exp ')' 										{ASTExpParan* expparan = new ASTExpParan($2); $$  = new ASTExp(); $$->ExpParan = expparan; }
 						;
 term 					: NUMBER											{ASTTermNum* numterm = new ASTTermNum($1); $$=new ASTTerm(); $$->NumTerm = numterm; cout<<"term created"<<$$->NumTerm->num<<endl;}

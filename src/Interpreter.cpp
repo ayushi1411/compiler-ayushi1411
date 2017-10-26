@@ -31,6 +31,14 @@ public:
     void visit(class ASTMultiCodeAssignment*);
     void visit(class ASTCodeRead*);
     void visit(class ASTMultiCodeRead*);
+    void visit(class ASTIfStmt*);
+    void visit(class ASTMultiCodeIfStmt*);
+    void visit(class ASTCodeIfStmt*);
+    void visit(class ASTCodeIfElse*);
+    void visit(class ASTMultiCodeIfElse*);
+    void visit(class ASTElseStmt*);
+    void visit(class ASTElse*);
+    void visit(class ASTElseIf*);
     int evaluateExp(class ASTExp*);
     bool checkIdExist(string id);
 };
@@ -76,8 +84,88 @@ void Interpreter::visit(ASTCodeStmt* astCodeStmt)
         astCodeStmt->CodeRead->accept(this);
     if(astCodeStmt->MultiCodeRead!=NULL)
         astCodeStmt->MultiCodeRead->accept(this);
+    if(astCodeStmt->CodeIfStmt!=NULL)
+        astCodeStmt->CodeIfStmt->accept(this);
+    if(astCodeStmt->MultiCodeIfStmt!=NULL)
+        astCodeStmt->MultiCodeIfStmt->accept(this);   
+    if(astCodeStmt->CodeIfElse!=NULL)
+        astCodeStmt->CodeIfElse->accept(this);
+    if(astCodeStmt->MultiCodeIfElse!=NULL)
+        astCodeStmt->MultiCodeIfElse->accept(this);
     return;
 }
+
+void Interpreter::visit(ASTMultiCodeIfElse* astMultiCodeIfElse)
+{
+    astMultiCodeIfElse->stmt->accept(this);
+    ASTIfStmt* ifStmt = astMultiCodeIfElse->ifstmt;
+    ASTElseStmt* elseStmt = astMultiCodeIfElse->elsestmt;
+    int val = evaluateExp(ifStmt->exp);
+    cout<<"executing if else stmt"<<endl;
+    if(val)
+    {
+        ifStmt->stmt->accept(this);
+    }
+    else
+    {
+        elseStmt->accept(this);
+    }
+}
+
+void Interpreter::visit(ASTCodeIfElse* astCodeIfElse)
+{
+    ASTIfStmt* ifStmt = astCodeIfElse->ifstmt;
+    ASTElseStmt* elseStmt = astCodeIfElse->elsestmt;
+    int val = evaluateExp(ifStmt->exp);
+    cout<<"executing if else stmt"<<endl;
+    if(val)
+    {
+        ifStmt->stmt->accept(this);
+    }
+    else
+    {
+        elseStmt->accept(this);
+    }
+}
+void Interpreter::visit(ASTElseStmt* astElseStmt)
+{
+    if(astElseStmt->ElseStmt!=NULL)
+        astElseStmt->ElseStmt->accept(this);
+    else if (astElseStmt->ElseIf!=NULL)
+        astElseStmt->ElseIf->accept(this);
+}
+
+void Interpreter::visit(ASTElse* astElse)
+{
+    astElse->stmt->accept(this);
+}
+
+void Interpreter::visit(ASTElseIf* astElseIf)
+{
+    astElseIf->if_stmt->accept(this);
+}
+
+void Interpreter::visit(ASTCodeIfStmt* astCodeIfStmt)
+{
+    astCodeIfStmt->ifstmt->accept(this);
+}
+
+void Interpreter::visit(ASTIfStmt* astIfStmt)
+{
+    int val = evaluateExp(astIfStmt->exp);
+    cout<<"executing if stmt"<<endl;
+    if(val)
+    {
+        astIfStmt->stmt->accept(this);
+    }
+}
+
+void Interpreter::visit(ASTMultiCodeIfStmt* astMultiCodeIfStmt)
+{
+    astMultiCodeIfStmt->stmt->accept(this);
+    astMultiCodeIfStmt->ifstmt->accept(this);
+}
+
 
 void Interpreter::visit(ASTCodeRead* astCodeRead)
 {

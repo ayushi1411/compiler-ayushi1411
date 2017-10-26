@@ -1598,7 +1598,7 @@ yyreduce:
 
   case 35:
 #line 147 "parser.y" /* yacc.c:1646  */
-    {(yyval.ASTIfStmt) = new ASTIfStmt((yyvsp[-3].ASTExp), (yyvsp[-1].ASTCodeStmt));}
+    {cout<<"going to construct if stmt\n";(yyval.ASTIfStmt) = new ASTIfStmt((yyvsp[-3].ASTExp), (yyvsp[-1].ASTCodeStmt)); cout<<"constructing if statement\n";}
 #line 1603 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1640,7 +1640,7 @@ yyreduce:
 
   case 42:
 #line 159 "parser.y" /* yacc.c:1646  */
-    {(yyval.ASTAssignment) = new ASTAssignment((yyvsp[-2].ASTIdNode), (yyvsp[0].ASTExp)); cout<<"assignmen seed "<<(yyvsp[-2].ASTIdNode)->id<<endl;	  }
+    {(yyval.ASTAssignment) = new ASTAssignment((yyvsp[-2].ASTIdNode), (yyvsp[0].ASTExp)); }
 #line 1645 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1652,7 +1652,7 @@ yyreduce:
 
   case 44:
 #line 162 "parser.y" /* yacc.c:1646  */
-    {ASTExpOps* expops = new ASTExpOps((yyvsp[-2].ASTExp), (yyvsp[-1].id), (yyvsp[0].ASTExp)); (yyval.ASTExp) = new ASTExp(); (yyval.ASTExp)->ExpOps = expops;}
+    {cout<<"creating expression"<<endl; ASTExpOps* expops = new ASTExpOps((yyvsp[-2].ASTExp), (yyvsp[-1].id), (yyvsp[0].ASTExp)); (yyval.ASTExp) = new ASTExp(); (yyval.ASTExp)->ExpOps = expops; cout<<"expression created\n";}
 #line 1657 "parser.tab.c" /* yacc.c:1646  */
     break;
 
