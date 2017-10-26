@@ -97,7 +97,12 @@ class Visitor
     virtual void visit(class ASTElseStmt*)=0;
     virtual void visit(class ASTElse*)=0;
     virtual void visit(class ASTElseIf*)=0;
-    
+    virtual void visit(class ASTCodeFor*)=0;
+    virtual void visit(class ASTMultiCodeFor*)=0;
+    virtual void visit(class ASTForStmt*)=0;
+    virtual void visit(class ASTCodeWhile*)=0;
+    virtual void visit(class ASTMultiCodeWhile*)=0;
+    virtual void visit(class ASTWhileStmt*)=0;
 };
 
 
@@ -314,6 +319,10 @@ public:
     {
         this->stmt = stmt;
     }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
+    }
 };
 class ASTCodeWhile:public ASTCodeStmt{
 public:
@@ -321,6 +330,10 @@ public:
     ASTCodeWhile(ASTWhileStmt *stmt)
     {
         this->stmt = stmt;
+    }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
     }
 };
 class ASTCodeGoto:public ASTCodeStmt{
@@ -408,6 +421,10 @@ public:
         this->stmt1 = stmt1;
         this->stmt2 = stmt2;
     }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 class ASTMultiCodeWhile:public ASTCodeStmt{
 public:
@@ -417,6 +434,10 @@ public:
     {
         this->stmt1 = stmt1;
         this->stmt2 = stmt2;
+    }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
     }
 };
 class ASTMultiCodeGoto:public ASTCodeStmt{
@@ -592,6 +613,10 @@ public:
         this->exp = exp;
         this->stmt = stmt;
     }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 
 //for expression
@@ -603,7 +628,17 @@ public:
     int num3;
     ASTForExp(string id, int num1, int num2, int num3=1)
     {
-        this->id = id;
+        string newid = "";
+        for(int i=0;i<id.size();i++)
+        {
+            if((id[i]>='a' && id[i]<='z') || (id[i]>='A' && id[i]<='Z') || (id[i]>='0' && id[i]<='9') )
+            {
+                newid+=id[i];
+            }
+            else
+                break;
+        }
+        this->id = newid;
         this->num1 = num1;
         this->num2 = num2;
         this->num3 = num3;
@@ -619,6 +654,10 @@ public:
     {
         this->exp = exp;
         this->stmt = stmt;
+    }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
     }
 };
 

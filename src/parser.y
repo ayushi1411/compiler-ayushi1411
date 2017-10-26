@@ -120,7 +120,7 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 						| code_statement assignment ';'						{ASTMultiCodeAssignment* codeassign = new ASTMultiCodeAssignment($1, $2); $$ = new ASTCodeStmt(); $$->MultiCodeAssignment = codeassign;}
 						| PRINT print_statement ';'							{ASTCodePrint* codeprint = new ASTCodePrint($2, false); $$ = new ASTCodeStmt(); $$->CodePrint = codeprint;}
 						| PRINTLN print_statement ';'						{ASTCodePrint* codeprint = new ASTCodePrint($2, true); $$ = new ASTCodeStmt(); $$->CodePrint = codeprint;}
-						| READVAR identifiers ';'							{ASTCodeRead* coderead = new ASTCodeRead($2); $$ = new ASTCodeStmt(); $$->CodeRead = coderead;}
+						| READVAR identifiers ';'							{ASTCodeRead* coderead = new ASTCodeRead($2); $$ = new ASTCodeStmt(); $$->CodeRead = coderead; cout<<"parsing read"<<endl;}
 						| if_statement else_statement						{ASTCodeIfElse* codeifelse = new ASTCodeIfElse($1, $2); $$ = new ASTCodeStmt(); $$->CodeIfElse = codeifelse;}
 						| if_statement										{ASTCodeIfStmt* codeif = new ASTCodeIfStmt($1); $$ = new ASTCodeStmt(); $$->CodeIfStmt = codeif;}
 						| for_statement										{ASTCodeFor* codefor = new ASTCodeFor($1); $$ = new ASTCodeStmt(); $$->CodeFor = codefor;}
@@ -129,7 +129,7 @@ code_statement			: EXIT_COMMAND ';'									{exit(EXIT_SUCCESS);}
 						| IDENTIFIER ':'									{ASTCodeLabel* codelabel = new ASTCodeLabel($1); $$ = new ASTCodeStmt(); $$->CodeLabel = codelabel;}
 						| code_statement PRINT print_statement ';'			{ASTMultiCodePrint* codeprint = new ASTMultiCodePrint($1, $3, false); $$ = new ASTCodeStmt(); $$->MultiCodePrint = codeprint;}
 						| code_statement PRINTLN print_statement ';'		{ASTMultiCodePrint* codeprint = new ASTMultiCodePrint($1, $3, true); $$ = new ASTCodeStmt(); $$->MultiCodePrint = codeprint;}
-						| code_statement READVAR identifiers ';'			{ASTMultiCodeRead* coderead = new ASTMultiCodeRead($1, $3); $$ = new ASTCodeStmt(); $$->MultiCodeRead = coderead;}
+						| code_statement READVAR identifiers ';'			{ASTMultiCodeRead* coderead = new ASTMultiCodeRead($1, $3); $$ = new ASTCodeStmt(); $$->MultiCodeRead = coderead;cout<<"parsing multi read"<<endl;}
 						| code_statement EXIT_COMMAND ';' 					{exit(EXIT_SUCCESS);}
 						| code_statement if_statement else_statement		{ASTMultiCodeIfElse* codeifelse = new ASTMultiCodeIfElse($1, $2, $3); $$ = new ASTCodeStmt(); $$->MultiCodeIfElse = codeifelse;}
 						| code_statement if_statement						{ASTMultiCodeIfStmt* codeif = new ASTMultiCodeIfStmt($1, $2); $$ = new ASTCodeStmt(); $$->MultiCodeIfStmt = codeif;}
@@ -257,6 +257,7 @@ int main(int argc,char* argv[]){
 	yyparse();
 
     Interpreter* inter = new Interpreter();
+	cout<<"interpreting the program"<<endl;
 	root->accept(inter);
 }
 
