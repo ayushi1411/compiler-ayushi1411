@@ -1472,7 +1472,7 @@ yyreduce:
 
   case 14:
 #line 123 "parser.y" /* yacc.c:1646  */
-    {ASTCodeRead* coderead = new ASTCodeRead((yyvsp[-1].ASTIdNode)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeRead = coderead;}
+    {ASTCodeRead* coderead = new ASTCodeRead((yyvsp[-1].ASTIdNode)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->CodeRead = coderead; cout<<"parsing read"<<endl;}
 #line 1477 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1526,7 +1526,7 @@ yyreduce:
 
   case 23:
 #line 132 "parser.y" /* yacc.c:1646  */
-    {ASTMultiCodeRead* coderead = new ASTMultiCodeRead((yyvsp[-3].ASTCodeStmt), (yyvsp[-1].ASTIdNode)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeRead = coderead;}
+    {ASTMultiCodeRead* coderead = new ASTMultiCodeRead((yyvsp[-3].ASTCodeStmt), (yyvsp[-1].ASTIdNode)); (yyval.ASTCodeStmt) = new ASTCodeStmt(); (yyval.ASTCodeStmt)->MultiCodeRead = coderead;cout<<"parsing multi read"<<endl;}
 #line 1531 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2102,6 +2102,7 @@ int main(int argc,char* argv[]){
 	yyparse();
 
     Interpreter* inter = new Interpreter();
+	cout<<"interpreting the program"<<endl;
 	root->accept(inter);
 }
 

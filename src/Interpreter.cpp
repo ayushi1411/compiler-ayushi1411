@@ -42,6 +42,9 @@ public:
     void visit(class ASTCodeFor*);
     void visit(class ASTMultiCodeFor*);
     void visit(class ASTForStmt*);
+    void visit(class ASTCodeWhile*);
+    void visit(class ASTMultiCodeWhile*);
+    void visit(class ASTWhileStmt*);
     int evaluateExp(class ASTExp*);
     bool checkIdExist(string id);
 };
@@ -99,7 +102,31 @@ void Interpreter::visit(ASTCodeStmt* astCodeStmt)
         astCodeStmt->CodeFor->accept(this);
     if(astCodeStmt->MultiCodeFor!=NULL)
         astCodeStmt->MultiCodeFor->accept(this);
+    if(astCodeStmt->CodeWhile!=NULL)
+        astCodeStmt->CodeWhile->accept(this);
+    if(astCodeStmt->MultiCodeWhile!=NULL)
+        astCodeStmt->MultiCodeWhile->accept(this);
     return;
+}
+
+void Interpreter::visit(ASTCodeWhile* astCodeWhile)
+{
+    astCodeWhile->stmt->accept(this);
+}
+
+void Interpreter::visit(ASTMultiCodeWhile* astMultiCodeWhile)
+{
+    cout<<"entered multi while loop"<<endl;
+    astMultiCodeWhile->stmt1->accept(this);
+    astMultiCodeWhile->stmt2->accept(this);
+}
+
+void Interpreter::visit(ASTWhileStmt* astWhileStmt)
+{
+    while(evaluateExp(astWhileStmt->exp))
+    {
+        astWhileStmt->stmt->accept(this);
+    }
 }
 
 void Interpreter::visit(ASTCodeFor* astCodeFor)
@@ -213,6 +240,7 @@ void Interpreter::visit(ASTMultiCodeIfStmt* astMultiCodeIfStmt)
 void Interpreter::visit(ASTCodeRead* astCodeRead)
 {
     int index;
+    cout<<"reading variable value"<<endl;
     if(symbol_table.find(make_pair(astCodeRead->id->id,-1)) == symbol_table.end() && symbol_table.find(make_pair(astCodeRead->id->id,0)) == symbol_table.end())
     {
         cout<<"variable not declared"<<endl;

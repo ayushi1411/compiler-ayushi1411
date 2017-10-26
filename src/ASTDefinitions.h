@@ -100,7 +100,9 @@ class Visitor
     virtual void visit(class ASTCodeFor*)=0;
     virtual void visit(class ASTMultiCodeFor*)=0;
     virtual void visit(class ASTForStmt*)=0;
-    
+    virtual void visit(class ASTCodeWhile*)=0;
+    virtual void visit(class ASTMultiCodeWhile*)=0;
+    virtual void visit(class ASTWhileStmt*)=0;
 };
 
 
@@ -329,6 +331,10 @@ public:
     {
         this->stmt = stmt;
     }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
+    }
 };
 class ASTCodeGoto:public ASTCodeStmt{
 public:
@@ -428,6 +434,10 @@ public:
     {
         this->stmt1 = stmt1;
         this->stmt2 = stmt2;
+    }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
     }
 };
 class ASTMultiCodeGoto:public ASTCodeStmt{
@@ -644,6 +654,10 @@ public:
     {
         this->exp = exp;
         this->stmt = stmt;
+    }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
     }
 };
 
