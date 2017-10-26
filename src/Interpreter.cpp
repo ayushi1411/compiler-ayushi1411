@@ -39,6 +39,9 @@ public:
     void visit(class ASTElseStmt*);
     void visit(class ASTElse*);
     void visit(class ASTElseIf*);
+    void visit(class ASTCodeFor*);
+    void visit(class ASTMultiCodeFor*);
+    void visit(class ASTForStmt*);
     int evaluateExp(class ASTExp*);
     bool checkIdExist(string id);
 };
@@ -92,7 +95,47 @@ void Interpreter::visit(ASTCodeStmt* astCodeStmt)
         astCodeStmt->CodeIfElse->accept(this);
     if(astCodeStmt->MultiCodeIfElse!=NULL)
         astCodeStmt->MultiCodeIfElse->accept(this);
+    if(astCodeStmt->CodeFor!=NULL)
+        astCodeStmt->CodeFor->accept(this);
+    if(astCodeStmt->MultiCodeFor!=NULL)
+        astCodeStmt->MultiCodeFor->accept(this);
     return;
+}
+
+void Interpreter::visit(ASTCodeFor* astCodeFor)
+{
+    cout<<"calling for loop"<<endl;
+    astCodeFor->stmt->accept(this);
+}
+
+void Interpreter::visit(ASTMultiCodeFor* astMultiCodeFor)
+{
+    cout<<"calling multi code for loop "<<endl;
+    astMultiCodeFor->stmt1->accept(this);
+    astMultiCodeFor->stmt2->accept(this);
+}
+
+void Interpreter::visit(ASTForStmt* astForStmt)
+{
+    cout<<"executing for loop"<<endl;
+    string it = astForStmt->exp->id;
+    int start = astForStmt->exp->num1;
+    int last = astForStmt->exp->num2;
+    int inc = astForStmt->exp->num3;
+    cout<<"variable :: "<<it<<" "<<start<<" "<<last<<" "<<inc<<endl;
+    if(symbol_table.find(make_pair(it, -1))!=symbol_table.end())
+    {
+        symbol_table[make_pair(it, -1)]=start;
+        cout<<"iterator is declared and initialised to :: "<<symbol_table[make_pair(it, -1)]<<endl;
+        for(symbol_table[make_pair(it, -1)] = start; symbol_table[make_pair(it, -1)]<=last; symbol_table[make_pair(it, -1)]+=inc)
+        {
+            astForStmt->stmt->accept(this);
+        }
+    }
+    else{
+        cout<<"variable not declared"<<endl;
+        exit(0);
+    }
 }
 
 void Interpreter::visit(ASTMultiCodeIfElse* astMultiCodeIfElse)
