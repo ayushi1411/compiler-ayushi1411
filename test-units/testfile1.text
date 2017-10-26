@@ -7,6 +7,10 @@ codeblock{
     d=8;
     b=10;
     read b;
+    if b > 3
+    {
+        println "if condition satisfied"
+    }
     e[0]=10;
     c=(b);
     a=b+d;

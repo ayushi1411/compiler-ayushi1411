@@ -89,7 +89,14 @@ class Visitor
     virtual void visit(class ASTMultiCodeAssignment*)=0;
     virtual void visit(class ASTCodeRead*)=0;
     virtual void visit(class ASTMultiCodeRead*)=0;
-    
+    virtual void visit(class ASTIfStmt*)=0;
+    virtual void visit(class ASTMultiCodeIfStmt*)=0;
+    virtual void visit(class ASTCodeIfStmt*)=0;
+    virtual void visit(class ASTCodeIfElse*)=0;
+    virtual void visit(class ASTMultiCodeIfElse*)=0;
+    virtual void visit(class ASTElseStmt*)=0;
+    virtual void visit(class ASTElse*)=0;
+    virtual void visit(class ASTElseIf*)=0;
     
 };
 
@@ -120,10 +127,8 @@ public:
 //declaration statement
 class ASTDeclStmt{
 public:
-    // union{
         ASTParamsDeclStmt* ParamsDeclStmt;
         ASTMultiDeclStmt* MultiDeclStmt;
-    // };  
      void accept(Visitor* v)
     {
          v->visit(this);
@@ -285,6 +290,10 @@ public:
         this->ifstmt = ifstmt;
         this->elsestmt = elsestmt;
     }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 class ASTCodeIfStmt:public ASTCodeStmt{
 public:
@@ -292,6 +301,10 @@ public:
     ASTCodeIfStmt(ASTIfStmt* ifstmt)
     {
         this->ifstmt = ifstmt;
+    }
+    void accept(Visitor *v)
+    {
+        v->visit(this);
     }
 };
 class ASTCodeFor:public ASTCodeStmt{
@@ -367,6 +380,10 @@ public:
         this->ifstmt = ifstmt;
         this->elsestmt = elsestmt;
     }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 class ASTMultiCodeIfStmt:public ASTCodeStmt{
 public:
@@ -376,6 +393,10 @@ public:
     {
         this->stmt = stmt;
         this->ifstmt = ifstmt;
+    }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
     }
 };
 class ASTMultiCodeFor:public ASTCodeStmt{
@@ -426,6 +447,11 @@ public:
     // bool newline;    
         ASTMultiPrintStmt* MulPrintStmt;
         ASTFinPrintStmt* FinPrintStmt;  
+        ASTPrintStmt()
+        {
+            this->MulPrintStmt=NULL;
+            this->FinPrintStmt=NULL;
+        }
     void accept(Visitor* v)
     {
         v->visit(this);
@@ -510,16 +536,26 @@ public:
         this->exp = exp;
         this->stmt = stmt;
     }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 
 //else statement
 class ASTElseStmt:public ASTCodeStmt{
 public:
-    union{
         ASTElse* ElseStmt;
         ASTElseIf* ElseIf;
-    };
-
+        ASTElseStmt()
+        {
+            this->ElseStmt=NULL;
+            this->ElseIf=NULL;
+        }
+        void accept(Visitor* v)
+        {
+            v->visit(this);
+        }
 };
 class ASTElse:public ASTElseStmt{
 public:
@@ -528,6 +564,10 @@ public:
     {
         this->stmt = stmt;
     }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
+    }
 };
 class ASTElseIf:public ASTElseStmt{
 public:
@@ -535,6 +575,10 @@ public:
     ASTElseIf(ASTIfStmt* if_stmt)
     {
         this->if_stmt = if_stmt;
+    }
+    void accept(Visitor* v)
+    {
+        v->visit(this);
     }
 };
 
